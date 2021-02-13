@@ -10,23 +10,31 @@ namespace Rental.Domain
         readonly IRepositoryContext<RentalContext> context;
         readonly IRepository<RentalContext, RoleEntity> roleRepository;
         readonly IRepository<RentalContext, UserEntity> userRepository;
+        readonly IRepository<RentalContext, PermissionEntity> permissionRepository;
+        readonly IRepository<RentalContext, RolePermissionEntity> rolePermissionRepository;
 
         public AuthService(
             IRepositoryContext<RentalContext> context,
             IRepository<RentalContext, RoleEntity> roleRepository,
-            IRepository<RentalContext, UserEntity> userRepository)
+            IRepository<RentalContext, UserEntity> userRepository,
+            IRepository<RentalContext, PermissionEntity> permissionRepository,
+            IRepository<RentalContext, RolePermissionEntity> rolePermissionRepository)
         {
             this.context = context;
             this.roleRepository = roleRepository;
             this.userRepository = userRepository;
+            this.permissionRepository = permissionRepository;
+            this.rolePermissionRepository = rolePermissionRepository;
         }
 
-        public async Task<RoleEntity> CreateRole(RoleEntity role)
+        public async Task<RoleEntity> CreateRole(RoleEntity role, int[] permissionIDs)
         {
-            RoleEntity roleCreated = roleRepository.Create(role);
+            var rolePermissions = permissionIDs.Distinct().Where(id => permissionRepository.Exists(p => p.Id == id))
+                .Select(id => new RolePermissionEntity { Role = role, IdPermission = id });
+            rolePermissionRepository.CreateAll(rolePermissions);
             await context.SaveAsync();
 
-            return roleCreated;
+            return role;
         }
 
         public async Task<UserEntity> CreateUser(UserEntity user)
