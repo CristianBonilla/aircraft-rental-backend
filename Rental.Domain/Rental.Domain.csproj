@@ -16,10 +16,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Context\" />
     <Folder Include="Migrations\" />
-    <Folder Include="Configuration\" />
-    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Rental.Infrastructure\Rental.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

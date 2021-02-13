@@ -37,7 +37,7 @@ namespace Rental.Domain
             return userCreated;
         }
 
-        public IEnumerable<RoleEntity> GetRoles() => roleRepository.Get(orderBy: o => o.OrderBy(n => n.RoleName));
+        public IEnumerable<RoleEntity> GetRoles() => roleRepository.Get(orderBy: o => o.OrderBy(n => n.Name));
 
         public IEnumerable<UserEntity> GetUsers() => userRepository.Get(orderBy: o => o.OrderBy(u => u.FirstName).ThenBy(u => u.LastName));
     }
