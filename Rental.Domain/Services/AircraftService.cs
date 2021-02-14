@@ -18,7 +18,7 @@ namespace Rental.Domain
         public async Task<AircraftEntity> CreateAircraft(AircraftEntity aircraft)
         {
             AircraftEntity aircraftCreated = repository.Create(aircraft);
-            await context.SaveAsync();
+            _ = await context.SaveAsync();
 
             return aircraftCreated;
         }
@@ -33,21 +33,17 @@ namespace Rental.Domain
         public async Task<AircraftEntity> UpdateAircraft(AircraftEntity aircraft)
         {
             AircraftEntity aircraftUpdated = repository.Update(aircraft);
-            await context.SaveAsync();
+            _ = await context.SaveAsync();
 
             return aircraftUpdated;
         }
 
-        public async Task<AircraftEntity> DeleteAircraft(int id)
+        public async Task<AircraftEntity> DeleteAircraft(AircraftEntity aircraft)
         {
-            AircraftEntity aircraft = await AircraftById(id);
-            if (aircraft != null)
-            {
-                repository.Delete(aircraft);
-                await context.SaveAsync();
-            }
+            AircraftEntity aircraftDeleted = repository.Delete(aircraft);
+            _ = await context.SaveAsync();
 
-            return aircraft;
+            return aircraftDeleted;
         }
 
         public IAsyncEnumerable<AircraftEntity> Aircrafts()

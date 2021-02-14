@@ -2,6 +2,12 @@ using System.Collections.Generic;
 
 namespace Rental.Domain
 {
+    public struct DefaultRoles
+    {
+        public const string AdminUser = nameof(AdminUser);
+        public const string CommonUser = nameof(CommonUser);
+    }
+
     public struct Permissions
     {
         public const string ROLES = nameof(ROLES);

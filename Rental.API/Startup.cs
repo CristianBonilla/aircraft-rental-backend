@@ -16,6 +16,10 @@ using Autofac.Extensions.DependencyInjection;
 using Autofac;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using AutoMapper;
 
 namespace Rental.API
 {
@@ -31,6 +35,29 @@ namespace Rental.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            JwtSettings jwtSettings = new JwtSettings();
+            services.AddSingleton(jwtSettings);
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    RequireExpirationTime = false,
+                    ValidateLifetime = true
+                };
+            });
+
             services.AddControllers()
                 .AddXmlSerializerFormatters()
                 .AddNewtonsoftJson(JsonSerializer);
@@ -38,6 +65,10 @@ namespace Rental.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Rental.API", Version = "v1" });
             });
+
+            MapperConfiguration mapperConfiguration = MapperStart.Start();
+            IMapper mapper = mapperConfiguration.CreateMapper();
+            services.AddSingleton(mapper);
 
             string connectionString = Configuration.GetConnectionString("AircraftRentalConnection");
             DataDirectoryConfig.SetDataDirectoryPath(ref connectionString);
@@ -48,6 +79,7 @@ namespace Rental.API
         // Register your own things directly with Autofac here.
         public void ConfigureContainer(ContainerBuilder builder)
         {
+            builder.RegisterModule<IdentityModule>();
             builder.RegisterModule<RentalModule>();
         }
 

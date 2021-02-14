@@ -139,6 +139,7 @@ namespace Rental.Domain.Migrations
                     IdRole = table.Column<int>(type: "int", nullable: false),
                     Username = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Password = table.Column<string>(type: "varchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
                     FirstName = table.Column<string>(type: "varchar(30)", unicode: false, maxLength: 30, nullable: false),
                     LastName = table.Column<string>(type: "varchar(30)", unicode: false, maxLength: 30, nullable: false)
                 },
@@ -150,7 +151,8 @@ namespace Rental.Domain.Migrations
                         column: x => x.IdRole,
                         principalSchema: "dbo",
                         principalTable: "Role",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -186,6 +188,13 @@ namespace Rental.Domain.Migrations
                 column: "IdPassenger");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Role_Name",
+                schema: "dbo",
+                table: "Role",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RolePermission_IdPermission",
                 schema: "dbo",
                 table: "RolePermission",
@@ -196,6 +205,13 @@ namespace Rental.Domain.Migrations
                 schema: "dbo",
                 table: "User",
                 column: "IdRole");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_Username_Email",
+                schema: "dbo",
+                table: "User",
+                columns: new[] { "Username", "Email" },
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

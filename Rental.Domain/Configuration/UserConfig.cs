@@ -17,6 +17,10 @@ namespace Rental.Domain
             builder.Property(p => p.Password)
                 .HasColumnType("varchar(max)")
                 .IsRequired();
+            builder.Property(p => p.Email)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .IsRequired();
             builder.Property(p => p.FirstName)
                 .HasMaxLength(30)
                 .IsUnicode(false)
@@ -28,7 +32,9 @@ namespace Rental.Domain
             builder.HasOne(o => o.Role)
                 .WithMany()
                 .HasForeignKey(f => f.IdRole)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasIndex(i => new { i.Username, i.Email })
+                .IsUnique();
         }
     }
 }

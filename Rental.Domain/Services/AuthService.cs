@@ -32,7 +32,7 @@ namespace Rental.Domain
             var rolePermissions = permissionIDs.Distinct().Where(id => permissionRepository.Exists(p => p.Id == id))
                 .Select(id => new RolePermissionEntity { Role = role, IdPermission = id });
             rolePermissionRepository.CreateAll(rolePermissions);
-            await context.SaveAsync();
+            _ = await context.SaveAsync();
 
             return role;
         }
@@ -40,7 +40,7 @@ namespace Rental.Domain
         public async Task<UserEntity> CreateUser(UserEntity user)
         {
             UserEntity userCreated = userRepository.Create(user);
-            await context.SaveAsync();
+            _ = await context.SaveAsync();
 
             return userCreated;
         }
@@ -48,6 +48,13 @@ namespace Rental.Domain
         public Task<RoleEntity> RoleById(int id)
         {
             RoleEntity role = roleRepository.Find(id);
+
+            return Task.FromResult(role);
+        }
+
+        public Task<RoleEntity> RoleByName(string name)
+        {
+            RoleEntity role = roleRepository.Find(r => r.Name == name);
 
             return Task.FromResult(role);
         }

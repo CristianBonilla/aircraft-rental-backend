@@ -15,6 +15,8 @@ namespace Rental.Domain
                 .HasMaxLength(30)
                 .IsUnicode(false)
                 .IsRequired();
+            builder.HasIndex(i => i.Name)
+                .IsUnique();
         }
     }
 

@@ -8,7 +8,7 @@ namespace Rental.Domain
         Task<AircraftEntity> CreateAircraft(AircraftEntity aircraft);
         Task<AircraftEntity> AircraftById(int id);
         Task<AircraftEntity> UpdateAircraft(AircraftEntity aircraft);
-        Task<AircraftEntity> DeleteAircraft(int id);
+        Task<AircraftEntity> DeleteAircraft(AircraftEntity aircraft);
         IAsyncEnumerable<AircraftEntity> Aircrafts();
     }
 }

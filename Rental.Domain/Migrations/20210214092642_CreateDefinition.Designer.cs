@@ -10,7 +10,7 @@ using Rental.Domain;
 namespace Rental.Domain.Migrations
 {
     [DbContext(typeof(RentalContext))]
-    [Migration("20210214022552_CreateDefinition")]
+    [Migration("20210214092642_CreateDefinition")]
     partial class CreateDefinition
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -171,6 +171,9 @@ namespace Rental.Domain.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("Role", "dbo");
                 });
 
@@ -195,6 +198,12 @@ namespace Rental.Domain.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -223,6 +232,9 @@ namespace Rental.Domain.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IdRole");
+
+                    b.HasIndex("Username", "Email")
+                        .IsUnique();
 
                     b.ToTable("User", "dbo");
                 });
@@ -270,7 +282,7 @@ namespace Rental.Domain.Migrations
                     b.HasOne("Rental.Domain.RoleEntity", "Role")
                         .WithMany()
                         .HasForeignKey("IdRole")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Role");
