@@ -59,8 +59,18 @@ namespace Rental.Domain
             return Task.FromResult(user);
         }
 
-        public IEnumerable<RoleEntity> Roles() => roleRepository.Get(orderBy: o => o.OrderBy(n => n.Name));
+        public IAsyncEnumerable<RoleEntity> Roles()
+        {
+            var roles = roleRepository.Get(orderBy: o => o.OrderBy(n => n.Name)).ToAsyncEnumerable();
 
-        public IEnumerable<UserEntity> Users() => userRepository.Get(orderBy: o => o.OrderBy(u => u.FirstName).ThenBy(u => u.LastName));
+            return roles;
+        }
+
+        public IAsyncEnumerable<UserEntity> Users()
+        {
+            var users = userRepository.Get(orderBy: o => o.OrderBy(u => u.FirstName).ThenBy(u => u.LastName)).ToAsyncEnumerable();
+
+            return users;
+        }
     }
 }

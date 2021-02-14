@@ -7,9 +7,9 @@ namespace Rental.Domain
     {
         Task<PassengerEntity> CreatePassenger(PassengerEntity passenger);
         Task<PassengerEntity> PassengerById(int id);
-        IEnumerable<PassengerEntity> Passengers();
+        IAsyncEnumerable<PassengerEntity> Passengers();
         Task<RentalEntity> CreateRental(RentalEntity rental);
         Task<RentalEntity> RentalById(int id);
-        IEnumerable<RentalEntity> Rentals();
+        IAsyncEnumerable<RentalEntity> Rentals();
     }
 }

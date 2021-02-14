@@ -9,7 +9,7 @@ namespace Rental.Domain
         Task<UserEntity> CreateUser(UserEntity user);
         Task<RoleEntity> RoleById(int id);
         Task<UserEntity> UserById(int id);
-        IEnumerable<RoleEntity> Roles();
-        IEnumerable<UserEntity> Users();
+        IAsyncEnumerable<RoleEntity> Roles();
+        IAsyncEnumerable<UserEntity> Users();
     }
 }

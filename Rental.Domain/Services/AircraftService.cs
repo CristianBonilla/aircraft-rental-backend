@@ -50,6 +50,11 @@ namespace Rental.Domain
             return aircraft;
         }
 
-        public IEnumerable<AircraftEntity> Aircrafts() => repository.Get(orderBy: o => o.OrderBy(a => a.Name));
+        public IAsyncEnumerable<AircraftEntity> Aircrafts()
+        {
+            var aircrafts = repository.Get(orderBy: o => o.OrderBy(a => a.Name)).ToAsyncEnumerable();
+
+            return aircrafts;
+        }
     }
 }

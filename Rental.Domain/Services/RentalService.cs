@@ -20,7 +20,7 @@ namespace Rental.Domain
         public async Task<PassengerEntity> CreatePassenger(PassengerEntity passenger)
         {
             PassengerEntity passengerCreated = passengerRepository.Create(passenger);
-            await context.SaveAsync();
+            _ = await context.SaveAsync();
 
             return passengerCreated;
         }
@@ -32,13 +32,18 @@ namespace Rental.Domain
             return Task.FromResult(passenger);
         }
 
-        public IEnumerable<PassengerEntity> Passengers() => passengerRepository.Get(orderBy:
-            o => o.OrderBy(p => p.IdentificationDocument).ThenBy(p => p.FirstName));
+        public IAsyncEnumerable<PassengerEntity> Passengers()
+        {
+            var passengers = passengerRepository.Get(orderBy: o => o.OrderBy(p => p.IdentificationDocument).ThenBy(p => p.FirstName))
+                .ToAsyncEnumerable();
+
+            return passengers;
+        }
 
         public async Task<RentalEntity> CreateRental(RentalEntity rental)
         {
             RentalEntity rentalCreated = rentalRepository.Create(rental);
-            await context.SaveAsync();
+            _ = await context.SaveAsync();
 
             return rentalCreated;
         }
@@ -50,6 +55,11 @@ namespace Rental.Domain
             return Task.FromResult(rental);
         }
 
-        public IEnumerable<RentalEntity> Rentals() => rentalRepository.Get(orderBy: o => o.OrderBy(r => r.Location));
+        public IAsyncEnumerable<RentalEntity> Rentals()
+        {
+            var rentals = rentalRepository.Get(orderBy: o => o.OrderBy(r => r.Location)).ToAsyncEnumerable();
+
+            return rentals;
+        }
     }
 }
