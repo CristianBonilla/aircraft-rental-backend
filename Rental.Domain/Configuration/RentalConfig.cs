@@ -40,11 +40,11 @@ namespace Rental.Domain
             builder.HasOne(o => o.Passenger)
                 .WithMany()
                 .HasForeignKey(f => f.IdPassenger)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.NoAction);
             builder.HasOne(o => o.Aircraft)
                 .WithMany()
                 .HasForeignKey(f => f.IdAircraft)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 

@@ -3,18 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rental.Infrastructure", "Rental.Infrastructure\Rental.Infrastructure.csproj", "{82A4724F-40A5-4F37-B811-386224667840}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rental.Infrastructure", "Rental.Infrastructure\Rental.Infrastructure.csproj", "{82A4724F-40A5-4F37-B811-386224667840}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{B6285381-31F8-49BD-B22F-DE7EA3A9B178}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rental.API", "Rental.API\Rental.API.csproj", "{E44500E1-B8B4-483B-8806-FE361FCE6A3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rental.API", "Rental.API\Rental.API.csproj", "{E44500E1-B8B4-483B-8806-FE361FCE6A3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rental.Domain", "Rental.Domain\Rental.Domain.csproj", "{75B7CF94-A717-482F-BE6E-A759DF564C7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rental.Domain", "Rental.Domain\Rental.Domain.csproj", "{75B7CF94-A717-482F-BE6E-A759DF564C7E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D83722C4-4FB9-42C9-BB7C-9B30342A89C5}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
+		aircraft-rental-script.sql = aircraft-rental-script.sql
 		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection

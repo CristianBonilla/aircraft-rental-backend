@@ -32,6 +32,12 @@ namespace Rental.Domain
                 .IsRequired();
             builder.HasIndex(i => i.Name)
                 .IsUnique();
+            builder.HasData(
+                new { Id = 1, Name = Permissions.ROLES },
+                new { Id = 2, Name = Permissions.USERS },
+                new { Id = 3, Name = Permissions.AIRCRAFTS },
+                new { Id = 4, Name = Permissions.PASSENGERS },
+                new { Id = 5, Name = Permissions.RENTALS });
         }
     }
 

@@ -13,6 +13,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Rental.Domain;
 using Autofac.Extensions.DependencyInjection;
+using Autofac;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Rental.API
 {
@@ -26,9 +29,11 @@ namespace Rental.API
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                .AddXmlSerializerFormatters()
+                .AddNewtonsoftJson(JsonSerializer);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Rental.API", Version = "v1" });
@@ -38,10 +43,12 @@ namespace Rental.API
             DataDirectoryConfig.SetDataDirectoryPath(ref connectionString);
 
             services.AddDbContextPool<RentalContext>(options => options.UseSqlServer(connectionString));
+        }
 
-            AutofacServiceProvider serviceProvider = AutofacProvider.Provider(services);
-
-            return serviceProvider;
+        // Register your own things directly with Autofac here.
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterModule<RentalModule>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,6 +67,27 @@ namespace Rental.API
             {
                 endpoints.MapControllers();
             });
+            // AutofacContainer = app.ApplicationServices.GetAutofacRoot();
+            MigrationStart<RentalContext>(app);
+        }
+
+        private static void MigrationStart<TContext>(IApplicationBuilder app) where TContext : DbContext
+        {
+            IServiceScopeFactory scopeFactory = app.ApplicationServices.GetService<IServiceScopeFactory>();
+            using IServiceScope serviceScope = scopeFactory.CreateScope();
+            TContext context = serviceScope.ServiceProvider.GetRequiredService<TContext>();
+            context.Database.Migrate();
+
+            // IRelationalDatabaseCreator databaseCreator = serviceScope.ServiceProvider.GetService<IRelationalDatabaseCreator>();
+            // databaseCreator.Exists();
+        }
+
+        private void JsonSerializer(MvcNewtonsoftJsonOptions options)
+        {
+            JsonSerializerSettings settings = options.SerializerSettings;
+            settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            settings.Formatting = Formatting.None;
         }
     }
 }
