@@ -66,6 +66,29 @@ namespace Rental.Domain
             return Task.FromResult(user);
         }
 
+        public Task<bool> RoleExists(string name)
+        {
+            bool exists = roleRepository.Exists(r => r.Name == name);
+
+            return Task.FromResult(exists);
+        }
+
+        public Task<bool> UserExists(string username, string email)
+        {
+            bool exists = userRepository.Exists(u => u.Username == username || u.Email == email);
+
+            return Task.FromResult(exists);
+        }
+
+        public IAsyncEnumerable<PermissionEntity> PermissionsByRole(RoleEntity role)
+        {
+            var permissions = rolePermissionRepository.Get(p => p.IdRole == role.Id)
+                .Select(p => permissionRepository.Find(p.IdPermission))
+                .ToAsyncEnumerable();
+
+            return permissions;
+        }
+
         public IAsyncEnumerable<RoleEntity> Roles()
         {
             var roles = roleRepository.Get(orderBy: o => o.OrderBy(n => n.Name)).ToAsyncEnumerable();

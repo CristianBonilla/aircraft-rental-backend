@@ -35,7 +35,17 @@ namespace Rental.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            JwtSettings jwtSettings = new JwtSettings();
+            services.AddControllers()
+                .AddNewtonsoftJson(JsonSerializer);
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Rental.API", Version = "v1" });
+            });
+
+            IConfigurationSection jwtSettingsSection = Configuration.GetSection(nameof(JwtSettings));
+            services.Configure<JwtSettings>(jwtSettingsSection);
+            JwtSettings jwtSettings = jwtSettingsSection.Get<JwtSettings>();
+            byte[] key = Encoding.ASCII.GetBytes(jwtSettings.Secret);
             services.AddSingleton(jwtSettings);
             services.AddAuthentication(options =>
             {
@@ -50,20 +60,12 @@ namespace Rental.API
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
                     ValidateAudience = false,
                     RequireExpirationTime = false,
                     ValidateLifetime = true
                 };
-            });
-
-            services.AddControllers()
-                .AddXmlSerializerFormatters()
-                .AddNewtonsoftJson(JsonSerializer);
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Rental.API", Version = "v1" });
             });
 
             MapperConfiguration mapperConfiguration = MapperStart.Start();
@@ -94,6 +96,14 @@ namespace Rental.API
             }
 
             app.UseRouting();
+
+            // Global cors policy
+            app.UseCors(options => options
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {

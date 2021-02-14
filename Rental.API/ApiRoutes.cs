@@ -8,8 +8,14 @@ namespace Rental.API
 
         public struct Identity
         {
+            public const string Register = Base + "/identity";
             public const string Login = Base + "/identity/login";
-            public const string Register = Base + "/identity/register";
+            public const string CreateRole = Base + "/identity/roles";
+            public const string CreateUser = Base + "/identity/users";
+            public const string GetRoleById = Base + "/identity/roles/{id}";
+            public const string GetUserById = Base + "/identity/users/{id}";
+            public const string GetRoles = Base + "/identity/roles";
+            public const string GetUsers = Base + "/identity/users";
         }
 
         public struct Auth

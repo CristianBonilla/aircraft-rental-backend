@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Rental.API.Models
+namespace Rental.API
 {
     public class AuthFailedResponse
     {

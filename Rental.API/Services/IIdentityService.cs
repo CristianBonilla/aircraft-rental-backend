@@ -8,6 +8,6 @@ namespace Rental.API
 {
     public interface IIdentityService
     {
-        Task<AuthenticationResult> Register(UserEntity user);
+        Task<AuthenticationResult> Register(UserEntity user, RoleRequest roleRequest = null);
     }
 }

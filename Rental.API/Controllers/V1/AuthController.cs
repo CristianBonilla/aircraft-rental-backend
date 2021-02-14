@@ -1,9 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
-using Rental.Domain;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+using Rental.Domain;
 
 namespace Rental.API.Controllers.V1
 {
@@ -51,14 +50,14 @@ namespace Rental.API.Controllers.V1
             return Ok(user);
         }
 
-        [HttpPost(ApiRoutes.Auth.CreateRole)]
-        public async Task<IActionResult> Post([FromBody] RoleEntity role, int[] permissionsIDs)
-        {
-            if (!permissionsIDs.Any())
-                return BadRequest();
-            RoleEntity roleCreated = await authService.CreateRole(role, permissionsIDs);
+        //[HttpPost(ApiRoutes.Auth.CreateRole)]
+        //public async Task<IActionResult> Post([FromBody] RoleRequest role)
+        //{
+        //    if (!role.PermissionsIDs.Any())
+        //        return BadRequest();
+        //    RoleEntity roleCreated = await authService.CreateRole(new RoleEntity { Name = role.Name }, role.PermissionsIDs);
 
-            return Ok(roleCreated);
-        }
+        //    return Ok(roleCreated);
+        //}
     }
 }

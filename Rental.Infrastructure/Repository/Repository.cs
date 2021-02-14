@@ -29,8 +29,11 @@ namespace Rental.Infrastructure
 
         public IEnumerable<TEntity> CreateAll(IEnumerable<TEntity> entities)
         {
-            foreach (TEntity entity in entities)
-                yield return Create(entity);
+            //foreach (TEntity entity in entities)
+            //    yield return Create(entity);
+            entitySet.AddRange(entities);
+
+            return entities.ToList();
         }
 
         public TEntity Update(TEntity entity)
@@ -47,8 +50,11 @@ namespace Rental.Infrastructure
 
         public IEnumerable<TEntity> UpdateAll(IEnumerable<TEntity> entities)
         {
-            foreach (TEntity entity in entities)
-                yield return Update(entity);
+            //foreach (TEntity entity in entities)
+            //    yield return Update(entity);
+            entitySet.UpdateRange(entities);
+
+            return entities.ToList();
         }
 
         public TEntity Delete(TEntity entity)
@@ -65,8 +71,11 @@ namespace Rental.Infrastructure
 
         public IEnumerable<TEntity> DeleteAll(IEnumerable<TEntity> entities)
         {
-            foreach (TEntity entity in entities)
-                yield return Delete(entity);
+            //foreach (TEntity entity in entities)
+            //    yield return Delete(entity);
+            entitySet.RemoveRange(entities);
+
+            return entities.ToList();
         }
 
         public TEntity Find(params object[] keyValues) => entitySet.Find(keyValues);
@@ -90,7 +99,7 @@ namespace Rental.Infrastructure
 
             var queryable = orderBy != null ? orderBy(querySet) : querySet;
 
-            return queryable;
+            return queryable.ToList();
         }
     }
 }
