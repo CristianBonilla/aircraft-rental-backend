@@ -1,25 +1,26 @@
+using System;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Rental.Domain;
-using Autofac.Extensions.DependencyInjection;
-using Autofac;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
+using Rental.Domain;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Rental.API
 {
@@ -37,6 +38,9 @@ namespace Rental.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers()
+                .AddNewtonsoftJson(JsonSerializer);
+
             IConfigurationSection jwtSettingsSection = Configuration.GetSection(nameof(JwtSettings));
             services.Configure<JwtSettings>(jwtSettingsSection);
             JwtSettings jwtSettings = jwtSettingsSection.Get<JwtSettings>();
@@ -64,6 +68,31 @@ namespace Rental.API
                 };
             });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("UsersPolicy", policy =>
+                {
+                    policy.AddRequirements(new RolPermissionsPolicyRequirement(Permissions.USERS));
+                });
+                options.AddPolicy("RolesPolicy", policy =>
+                {
+                    policy.AddRequirements(new RolPermissionsPolicyRequirement(Permissions.ROLES));
+                });
+                options.AddPolicy("PassengersPolicy", policy =>
+                {
+                    policy.AddRequirements(new RolPermissionsPolicyRequirement(Permissions.PASSENGERS));
+                });
+                options.AddPolicy("RentalsPolicy", policy =>
+                {
+                    policy.AddRequirements(new RolPermissionsPolicyRequirement(Permissions.RENTALS));
+                });
+                options.AddPolicy("AircraftsPolicy", policy =>
+                {
+                    policy.AddRequirements(new RolPermissionsPolicyRequirement(Permissions.AIRCRAFTS));
+                });
+            });
+            services.AddSingleton<IAuthorizationHandler, RolPermissionsPolicyHandler>();
+
             MapperConfiguration mapperConfiguration = MapperStart.Start();  
             IMapper mapper = mapperConfiguration.CreateMapper();
             services.AddSingleton(mapper);
@@ -72,9 +101,6 @@ namespace Rental.API
             DataDirectoryConfig.SetDataDirectoryPath(ref connectionString);
 
             services.AddDbContextPool<RentalContext>(options => options.UseSqlServer(connectionString));
-
-            services.AddControllers()
-                .AddNewtonsoftJson(JsonSerializer);
 
             services.AddSwaggerGen(options =>
             {
@@ -134,18 +160,7 @@ namespace Rental.API
                 endpoints.MapControllers();
             });
             // AutofacContainer = app.ApplicationServices.GetAutofacRoot();
-            MigrationStart<RentalContext>(app);
-        }
-
-        private static void MigrationStart<TContext>(IApplicationBuilder app) where TContext : DbContext
-        {
-            IServiceScopeFactory scopeFactory = app.ApplicationServices.GetService<IServiceScopeFactory>();
-            using IServiceScope serviceScope = scopeFactory.CreateScope();
-            TContext context = serviceScope.ServiceProvider.GetRequiredService<TContext>();
-            context.Database.Migrate();
-
-            // IRelationalDatabaseCreator databaseCreator = serviceScope.ServiceProvider.GetService<IRelationalDatabaseCreator>();
-            // databaseCreator.Exists();
+            // DbMigrationStart<RentalContext>(app);
         }
 
         private void JsonSerializer(MvcNewtonsoftJsonOptions options)
@@ -155,5 +170,16 @@ namespace Rental.API
             settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             settings.Formatting = Formatting.None;
         }
+
+        //private static void DbMigrationStart<TContext>(IApplicationBuilder app) where TContext : DbContext
+        //{
+        //    IServiceScopeFactory scopeFactory = app.ApplicationServices.GetService<IServiceScopeFactory>();
+        //    using IServiceScope serviceScope = scopeFactory.CreateScope();
+        //    TContext dbContext = serviceScope.ServiceProvider.GetRequiredService<TContext>();
+        //    dbContext.Database.Migrate();
+
+        //    // IRelationalDatabaseCreator databaseCreator = serviceScope.ServiceProvider.GetService<IRelationalDatabaseCreator>();
+        //    // databaseCreator.Exists();
+        //}
     }
 }

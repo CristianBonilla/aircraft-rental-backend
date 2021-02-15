@@ -34,8 +34,4 @@
     <ProjectReference Include="..\Rental.Infrastructure\Rental.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Policies\" />
-  </ItemGroup>
-
 </Project>

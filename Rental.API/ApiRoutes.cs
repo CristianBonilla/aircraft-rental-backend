@@ -15,6 +15,7 @@ namespace Rental.API
             public const string GetUserById = Base + "/identity/users/{id}";
             public const string GetRoles = Base + "/identity/roles";
             public const string GetUsers = Base + "/identity/users";
+            public const string GetPermissionsByRole = Base + "/identity/roles/{idRole}/permissions";
         }
 
         public struct Aircraft

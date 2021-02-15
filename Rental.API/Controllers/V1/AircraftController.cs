@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 namespace Rental.API.Controllers.V1
 {
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme/* Policy = */)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "AircraftsPolicy")]
     public class AircraftController : ControllerBase
     {
         readonly IMapper mapper;
@@ -45,20 +45,21 @@ namespace Rental.API.Controllers.V1
         }
 
         [HttpPost(ApiRoutes.Aircraft.Create)]
-        public async Task<IActionResult> Post([FromBody] AircraftEntity aircraft)
+        public async Task<IActionResult> Post([FromBody] AircraftRequest aircraftRequest)
         {
+            AircraftEntity aircraft = mapper.Map<AircraftEntity>(aircraftRequest);
             AircraftEntity aircraftCreated = await aircraftService.CreateAircraft(aircraft);
 
             return Ok(aircraftCreated);
         }
 
         [HttpPut(ApiRoutes.Aircraft.Update)]
-        public async Task<IActionResult> Put(int id, [FromBody] AircraftEntity aircraft)
+        public async Task<IActionResult> Put(int id, [FromBody] AircraftRequest aircraftRequest)
         {
-            AircraftEntity aircraftFound = await aircraftService.FindAircraft(a => a.Id == id);
-            if (aircraftFound == null)
+            AircraftEntity aircraft = await aircraftService.FindAircraft(a => a.Id == id);
+            if (aircraft == null)
                 return NotFound();
-            AircraftEntity aircraftMap = mapper.Map(aircraft, aircraftFound);
+            AircraftEntity aircraftMap = mapper.Map(aircraftRequest, aircraft);
             AircraftEntity aircraftUpdated = await aircraftService.UpdateAircraft(aircraftMap);
 
             return Ok(aircraftUpdated);
@@ -70,9 +71,9 @@ namespace Rental.API.Controllers.V1
             AircraftEntity aircraftFound = await aircraftService.FindAircraft(a => a.Id == id);
             if (aircraftFound == null)
                 return NotFound();
-            AircraftEntity aircraftDeleted = await aircraftService.DeleteAircraft(aircraftFound);
+            _ = await aircraftService.DeleteAircraft(aircraftFound);
 
-            return Ok(aircraftDeleted);
+            return NoContent();
         }
     }
 }

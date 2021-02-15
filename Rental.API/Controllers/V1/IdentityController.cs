@@ -66,7 +66,7 @@ namespace Rental.API.Controllers.V1
             });
         }
 
-        //[Authorize(Policy = "")]
+        [Authorize(Policy = "RolesPolicy")]
         [HttpPost(ApiRoutes.Identity.CreateRole)]
         public async Task<IActionResult> CreateRole([FromBody] RoleRequest roleRequest)
         {
@@ -80,7 +80,7 @@ namespace Rental.API.Controllers.V1
             return Ok(role);
         }
 
-        //[Authorize(Policy = "")]
+        [Authorize(Policy = "RolesPolicy")]
         [HttpGet(ApiRoutes.Identity.GetRoleById)]
         public async Task<IActionResult> GetRoleById(int id)
         {
@@ -91,7 +91,7 @@ namespace Rental.API.Controllers.V1
             return Ok(role);
         }
 
-        //[Authorize(Policy = "")]
+        [Authorize(Policy = "UsersPolicy")]
         [HttpGet(ApiRoutes.Identity.GetUserById)]
         public async Task<IActionResult> GetUserById(int id)
         {
@@ -102,7 +102,7 @@ namespace Rental.API.Controllers.V1
             return Ok(user);
         }
 
-        //[Authorize(Policy = "")]
+        [Authorize(Policy = "RolesPolicy")]
         [HttpGet(ApiRoutes.Identity.GetRoles)]
         public async IAsyncEnumerable<RoleEntity> GetRoles()
         {
@@ -111,13 +111,25 @@ namespace Rental.API.Controllers.V1
                 yield return role;
         }
 
-        //[Authorize(Policy = "")]
+        [Authorize(Policy = "UsersPolicy")]
         [HttpGet(ApiRoutes.Identity.GetUsers)]
         public async IAsyncEnumerable<UserEntity> GetUsers()
         {
             var users = authService.Users();
             await foreach (UserEntity user in users)
                 yield return user;
+        }
+
+        [Authorize(Policy = "RolesPolicy")]
+        [HttpGet(ApiRoutes.Identity.GetPermissionsByRole)]
+        public async Task<IActionResult> GetPermissionsByRole(int idRole)
+        {
+            RoleEntity role = await authService.FindRole(r => r.Id == idRole);
+            if (role == null)
+                return BadRequest(new { Errors = new[] { "Unable to get permissions if role does not exist" } });
+            var permissions = await authService.PermissionsByRole(role).ToListAsync();
+
+            return Ok(permissions);
         }
     }
 }

@@ -3,30 +3,34 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using AutoMapper;
 using Rental.Domain;
 
 namespace Rental.API.Controllers.V1
 {
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "RentalsPolicy")]
     public class RentalController : ControllerBase
     {
+        readonly IMapper mapper;
         readonly IRentalService rentalService;
 
-        public RentalController(IRentalService rentalService) =>
-            (this.rentalService) = (rentalService);
+        public RentalController(IMapper mapper, IRentalService rentalService) =>
+            (this.mapper, this.rentalService) = (mapper, rentalService);
 
         [HttpPost(ApiRoutes.Rental.CreateRental)]
-        public async Task<IActionResult> CreateRental([FromBody] RentalEntity rental)
+        public async Task<IActionResult> CreateRental([FromBody] RentalRequest rentalRequest)
         {
+            RentalEntity rental = mapper.Map<RentalEntity>(rentalRequest);
             RentalEntity rentalCreated = await rentalService.CreateRental(rental);
 
             return Ok(rentalCreated);
         }
 
         [HttpPost(ApiRoutes.Rental.CreatePassenger)]
-        public async Task<IActionResult> CreatePassenger([FromBody] PassengerEntity passenger)
+        public async Task<IActionResult> CreatePassenger([FromBody] PassengerRequest passengerRequest)
         {
+            PassengerEntity passenger = mapper.Map<PassengerEntity>(passengerRequest);
             PassengerEntity passengerCreated = await rentalService.CreatePassenger(passenger);
 
             return Ok(passengerCreated);
