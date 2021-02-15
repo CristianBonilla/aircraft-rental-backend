@@ -25,6 +25,8 @@ namespace Rental.API
 {
     public class Startup
     {
+        public const string Bearer = nameof(Bearer);
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -35,29 +37,23 @@ namespace Rental.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers()
-                .AddNewtonsoftJson(JsonSerializer);
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Rental.API", Version = "v1" });
-            });
-
             IConfigurationSection jwtSettingsSection = Configuration.GetSection(nameof(JwtSettings));
             services.Configure<JwtSettings>(jwtSettingsSection);
             JwtSettings jwtSettings = jwtSettingsSection.Get<JwtSettings>();
-            byte[] key = Encoding.ASCII.GetBytes(jwtSettings.Secret);
             services.AddSingleton(jwtSettings);
-            services.AddAuthentication(options =>
+
+            byte[] key = Encoding.ASCII.GetBytes(jwtSettings.Secret);
+            services.AddAuthentication(auth =>
             {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer(options =>
+            .AddJwtBearer(jwt =>
             {
-                options.RequireHttpsMetadata = false;
-                options.SaveToken = true;
-                options.TokenValidationParameters = new TokenValidationParameters
+                jwt.RequireHttpsMetadata = false; // Development only
+                jwt.SaveToken = true;
+                jwt.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
@@ -68,7 +64,7 @@ namespace Rental.API
                 };
             });
 
-            MapperConfiguration mapperConfiguration = MapperStart.Start();
+            MapperConfiguration mapperConfiguration = MapperStart.Start();  
             IMapper mapper = mapperConfiguration.CreateMapper();
             services.AddSingleton(mapper);
 
@@ -76,6 +72,34 @@ namespace Rental.API
             DataDirectoryConfig.SetDataDirectoryPath(ref connectionString);
 
             services.AddDbContextPool<RentalContext>(options => options.UseSqlServer(connectionString));
+
+            services.AddControllers()
+                .AddNewtonsoftJson(JsonSerializer);
+
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo {
+                    Title = "Aircraft Rental API",
+                    Version = "v1",
+                    Description = "Carry out aircraft rental processes safely"
+                });
+                options.AddSecurityDefinition(Bearer, new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the bearer scheme",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey
+                });
+                OpenApiSecurityScheme apiSecurity = new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Id = Bearer,
+                        Type = ReferenceType.SecurityScheme
+                    }
+                };
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement { { apiSecurity, new List<string>() } });
+            });
         }
 
         // Register your own things directly with Autofac here.

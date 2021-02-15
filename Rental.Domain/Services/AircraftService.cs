@@ -1,5 +1,7 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
 using System.Collections.Generic;
 using Rental.Infrastructure;
 
@@ -23,11 +25,11 @@ namespace Rental.Domain
             return aircraftCreated;
         }
 
-        public Task<AircraftEntity> AircraftById(int id)
+        public Task<AircraftEntity> FindAircraft(Expression<Func<AircraftEntity, bool>> expression)
         {
-            AircraftEntity aircraft = repository.Find(id);
+            AircraftEntity aircraftFound = repository.Find(expression);
 
-            return Task.FromResult(aircraft);
+            return Task.FromResult(aircraftFound);
         }
 
         public async Task<AircraftEntity> UpdateAircraft(AircraftEntity aircraft)
@@ -49,6 +51,13 @@ namespace Rental.Domain
         public IAsyncEnumerable<AircraftEntity> Aircrafts()
         {
             var aircrafts = repository.Get(orderBy: o => o.OrderBy(a => a.Name)).ToAsyncEnumerable();
+
+            return aircrafts;
+        }
+
+        public IAsyncEnumerable<AircraftEntity> AircraftsByState(AircraftState state)
+        {
+            var aircrafts = repository.Get(f => f.State == state, o => o.OrderBy(a => a.Name)).ToAsyncEnumerable();
 
             return aircrafts;
         }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using AutoMapper;
 using Rental.Domain;
+using System.Collections.Generic;
 
 namespace Rental.API.Controllers.V1
 {
@@ -26,21 +27,6 @@ namespace Rental.API.Controllers.V1
             this.identityService = identityService;
         }
             
-
-        //[Authorize(Policy = "")]
-        [HttpPost(ApiRoutes.Identity.CreateRole)]
-        public async Task<IActionResult> CreateRole([FromBody] RoleRequest roleRequest)
-        {
-            bool exstingRole = await authService.RoleExists(r => r.Name == roleRequest.Name);
-            if (exstingRole)
-                return BadRequest(new { Errors = new[] { "The role is already registered" } });
-            if (!roleRequest.PermissionsIDs.Any())
-                return BadRequest(new { Errors = new[] { "The permissions to grant the role were not defined" } });
-            RoleEntity role = await authService.CreateRole(new RoleEntity { Name = roleRequest.Name }, roleRequest.PermissionsIDs);
-
-            return Ok(role);
-        }
-
         [AllowAnonymous]
         [HttpPost(ApiRoutes.Identity.Register)]
         public async Task<IActionResult> Register([FromBody] UserRegisterRequest userRegisterRequest)
@@ -78,6 +64,60 @@ namespace Rental.API.Controllers.V1
             {
                 Token = authResponse.Token
             });
+        }
+
+        //[Authorize(Policy = "")]
+        [HttpPost(ApiRoutes.Identity.CreateRole)]
+        public async Task<IActionResult> CreateRole([FromBody] RoleRequest roleRequest)
+        {
+            bool exstingRole = await authService.RoleExists(r => r.Name == roleRequest.Name);
+            if (exstingRole)
+                return BadRequest(new { Errors = new[] { "The role is already registered" } });
+            if (!roleRequest.PermissionsIDs.Any())
+                return BadRequest(new { Errors = new[] { "The permissions to grant the role were not defined" } });
+            RoleEntity role = await authService.CreateRole(new RoleEntity { Name = roleRequest.Name }, roleRequest.PermissionsIDs);
+
+            return Ok(role);
+        }
+
+        //[Authorize(Policy = "")]
+        [HttpGet(ApiRoutes.Identity.GetRoleById)]
+        public async Task<IActionResult> GetRoleById(int id)
+        {
+            RoleEntity role = await authService.FindRole(r => r.Id == id);
+            if (role == null)
+                return NotFound();
+
+            return Ok(role);
+        }
+
+        //[Authorize(Policy = "")]
+        [HttpGet(ApiRoutes.Identity.GetUserById)]
+        public async Task<IActionResult> GetUserById(int id)
+        {
+            UserEntity user = await authService.FindUser(u => u.Id == id);
+            if (user == null)
+                return NotFound();
+
+            return Ok(user);
+        }
+
+        //[Authorize(Policy = "")]
+        [HttpGet(ApiRoutes.Identity.GetRoles)]
+        public async IAsyncEnumerable<RoleEntity> GetRoles()
+        {
+            var roles = authService.Roles();
+            await foreach (RoleEntity role in roles)
+                yield return role;
+        }
+
+        //[Authorize(Policy = "")]
+        [HttpGet(ApiRoutes.Identity.GetUsers)]
+        public async IAsyncEnumerable<UserEntity> GetUsers()
+        {
+            var users = authService.Users();
+            await foreach (UserEntity user in users)
+                yield return user;
         }
     }
 }

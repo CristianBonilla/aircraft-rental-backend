@@ -1,5 +1,7 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
 using System.Collections.Generic;
 using Rental.Infrastructure;
 
@@ -33,16 +35,16 @@ namespace Rental.Domain
             return passengerCreated;
         }
 
-        public Task<RentalEntity> RentalById(int id)
+        public Task<RentalEntity> FindRental(Expression<Func<RentalEntity, bool>> expression)
         {
-            RentalEntity rental = rentalRepository.Find(id);
+            RentalEntity rental = rentalRepository.Find(expression);
 
             return Task.FromResult(rental);
         }
 
-        public Task<PassengerEntity> PassengerById(int id)
+        public Task<PassengerEntity> FindPassenger(Expression<Func<PassengerEntity, bool>> expression)
         {
-            PassengerEntity passenger = passengerRepository.Find(id);
+            PassengerEntity passenger = passengerRepository.Find(expression);
 
             return Task.FromResult(passenger);
         }

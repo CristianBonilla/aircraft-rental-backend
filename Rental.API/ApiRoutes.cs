@@ -11,21 +11,10 @@ namespace Rental.API
             public const string Register = Base + "/identity";
             public const string Login = Base + "/identity/login";
             public const string CreateRole = Base + "/identity/roles";
-            public const string CreateUser = Base + "/identity/users";
             public const string GetRoleById = Base + "/identity/roles/{id}";
             public const string GetUserById = Base + "/identity/users/{id}";
             public const string GetRoles = Base + "/identity/roles";
             public const string GetUsers = Base + "/identity/users";
-        }
-
-        public struct Auth
-        {
-            public const string CreateRole = Base + "/auth";
-            public const string CreateUser = Base + "/auth/users";
-            public const string GetRoleById = Base + "/auth/{id}";
-            public const string GetUserById = Base + "/auth/users/{id}";
-            public const string GetRoles = Base + "/auth";
-            public const string GetUsers = Base + "/auth/users";
         }
 
         public struct Aircraft
@@ -33,6 +22,7 @@ namespace Rental.API
             public const string Create = Base + "/aircraft";
             public const string Get = Base + "/aircraft";
             public const string GetById = Base + "/aircraft/{id}";
+            public const string GetByState = Base + "/aircraft/state/{state}";
             public const string Update = Base + "/aircraft/{id}";
             public const string Delete = Base + "/aircraft/{id}";
         }
