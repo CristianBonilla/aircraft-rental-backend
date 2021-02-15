@@ -2,6 +2,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Rental.Infrastructure;
+using System.Linq.Expressions;
+using System;
 
 namespace Rental.Domain
 {
@@ -45,39 +47,32 @@ namespace Rental.Domain
             return userCreated;
         }
 
-        public Task<RoleEntity> RoleById(int id)
+        public Task<RoleEntity> FindRole(Expression<Func<RoleEntity, bool>> expression)
         {
-            RoleEntity role = roleRepository.Find(id);
+            RoleEntity roleFound = roleRepository.Find(expression);
 
-            return Task.FromResult(role);
+            return Task.FromResult(roleFound);
         }
 
-        public Task<RoleEntity> RoleByName(string name)
+        public Task<UserEntity> FindUser(Expression<Func<UserEntity, bool>> expression)
         {
-            RoleEntity role = roleRepository.Find(r => r.Name == name);
+            UserEntity userFound = userRepository.Find(expression);
 
-            return Task.FromResult(role);
+            return Task.FromResult(userFound);
         }
 
-        public Task<UserEntity> UserById(int id)
+        public Task<bool> RoleExists(Expression<Func<RoleEntity, bool>> expression)
         {
-            UserEntity user = userRepository.Find(id);
+            bool existingRole = roleRepository.Exists(expression);
 
-            return Task.FromResult(user);
+            return Task.FromResult(existingRole);
         }
 
-        public Task<bool> RoleExists(string name)
+        public Task<bool> UserExists(Expression<Func<UserEntity, bool>> expression)
         {
-            bool exists = roleRepository.Exists(r => r.Name == name);
+            bool existingUser = userRepository.Exists(expression);
 
-            return Task.FromResult(exists);
-        }
-
-        public Task<bool> UserExists(string username, string email)
-        {
-            bool exists = userRepository.Exists(u => u.Username == username || u.Email == email);
-
-            return Task.FromResult(exists);
+            return Task.FromResult(existingUser);
         }
 
         public IAsyncEnumerable<PermissionEntity> PermissionsByRole(RoleEntity role)

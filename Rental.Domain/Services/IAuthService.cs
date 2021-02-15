@@ -1,4 +1,6 @@
+using System;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
 using System.Collections.Generic;
 
 namespace Rental.Domain
@@ -7,11 +9,10 @@ namespace Rental.Domain
     {
         Task<RoleEntity> CreateRole(RoleEntity role, int[] permissionIDs);
         Task<UserEntity> CreateUser(UserEntity user);
-        Task<RoleEntity> RoleById(int id);
-        Task<RoleEntity> RoleByName(string name);
-        Task<UserEntity> UserById(int id);
-        Task<bool> RoleExists(string name);
-        Task<bool> UserExists(string username, string email);
+        Task<RoleEntity> FindRole(Expression<Func<RoleEntity, bool>> expression);
+        Task<UserEntity> FindUser(Expression<Func<UserEntity, bool>> expression);
+        Task<bool> RoleExists(Expression<Func<RoleEntity, bool>> expression);
+        Task<bool> UserExists(Expression<Func<UserEntity, bool>> expression);
         IAsyncEnumerable<PermissionEntity> PermissionsByRole(RoleEntity role);
         IAsyncEnumerable<RoleEntity> Roles();
         IAsyncEnumerable<UserEntity> Users();

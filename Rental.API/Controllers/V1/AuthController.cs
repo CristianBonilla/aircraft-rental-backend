@@ -25,7 +25,7 @@ namespace Rental.API.Controllers.V1
         [HttpGet(ApiRoutes.Auth.GetRoleById)]
         public async Task<IActionResult> Get(int id)
         {
-            RoleEntity role = await authService.RoleById(id);
+            RoleEntity role = await authService.FindRole(r => r.Id == id);
             if (role == null)
                 return NotFound();
 
@@ -43,21 +43,21 @@ namespace Rental.API.Controllers.V1
         [HttpGet(ApiRoutes.Auth.GetUserById)]
         public async Task<IActionResult> GetUserById(int id)
         {
-            UserEntity user = await authService.UserById(id);
+            UserEntity user = await authService.FindUser(u => u.Id == id);
             if (user == null)
                 return NotFound();
 
             return Ok(user);
         }
 
-        //[HttpPost(ApiRoutes.Auth.CreateRole)]
-        //public async Task<IActionResult> Post([FromBody] RoleRequest role)
-        //{
-        //    if (!role.PermissionsIDs.Any())
-        //        return BadRequest();
-        //    RoleEntity roleCreated = await authService.CreateRole(new RoleEntity { Name = role.Name }, role.PermissionsIDs);
+        [HttpPost(ApiRoutes.Auth.CreateRole)]
+        public async Task<IActionResult> Post([FromBody] RoleRequest role)
+        {
+            if (!role.PermissionsIDs.Any())
+                return BadRequest();
+            RoleEntity roleCreated = await authService.CreateRole(new RoleEntity { Name = role.Name }, role.PermissionsIDs);
 
-        //    return Ok(roleCreated);
-        //}
+            return Ok(roleCreated);
+        }
     }
 }

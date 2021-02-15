@@ -1,13 +1,11 @@
-using Rental.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Rental.Domain;
 
 namespace Rental.API
 {
     public interface IIdentityService
     {
-        Task<AuthenticationResult> Register(UserEntity user, RoleRequest roleRequest = null);
+        Task<AuthenticationResult> Register(UserEntity user, string roleName = null);
+        Task<AuthenticationResult> Login(UserLoginRequest userLoginRequest);
     }
 }
