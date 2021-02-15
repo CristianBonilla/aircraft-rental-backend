@@ -95,7 +95,7 @@ namespace Rental.API
             });
             services.AddSingleton<IAuthorizationHandler, RolePermissionsPolicyHandler>();
 
-            MapperConfiguration mapperConfiguration = MapperStart.Start();  
+            MapperConfiguration mapperConfiguration = MapperStart.Start();
             IMapper mapper = mapperConfiguration.CreateMapper();
             services.AddSingleton(mapper);
 
