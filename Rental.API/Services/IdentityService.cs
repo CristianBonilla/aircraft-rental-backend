@@ -29,7 +29,7 @@ namespace Rental.API
                     Errors = new[] { "User with provided email or username already exists" }
                 };
             }
-            RoleEntity role = await GetRegistrationRole(roleName);
+            RoleEntity role = await GetRole(roleName);
             if (role == null)
             {
                 return new AuthenticationResult
@@ -110,17 +110,14 @@ namespace Rental.API
             return permissionsJson;
         }
 
-        private async Task<RoleEntity> GetRegistrationRole(string roleName = null)
+        private async Task<RoleEntity> GetRole(string roleName = null)
         {
             bool emptyUsers = !(await authService.Users().AnyAsync());
             if (!emptyUsers && roleName != null)
                 return await authService.FindRole(r => r.Name == roleName);
-            (string defaultRoleName, int[] permissions) = emptyUsers ? (DefaultRoles.AdminUser, new[] { 1, 2, 3, 4, 5 }) : (DefaultRoles.CommonUser, new[] { 4, 5 });
-            RoleEntity role = await authService.FindRole(r => r.Name == defaultRoleName);
-            if (role == null)
-                role = await authService.CreateRole(new RoleEntity { Name = defaultRoleName }, permissions);
+            string defaultRoleName = emptyUsers ? DefaultRoles.AdminUser : DefaultRoles.CommonUser;
 
-            return role;
+            return await authService.FindRole(r => r.Name == defaultRoleName);
         }
     }
 }

@@ -17,6 +17,9 @@ namespace Rental.Domain
                 .IsRequired();
             builder.HasIndex(i => i.Name)
                 .IsUnique();
+            builder.HasData(
+                new { Id = 1, Name = DefaultRoles.AdminUser },
+                new { Id = 2, Name = DefaultRoles.CommonUser });
         }
     }
 
@@ -55,6 +58,14 @@ namespace Rental.Domain
             builder.HasOne(o => o.Permission)
                 .WithMany()
                 .HasForeignKey(f => f.IdPermission);
+            builder.HasData(
+                new { IdRole = 1, IdPermission = 1 },
+                new { IdRole = 1, IdPermission = 2 },
+                new { IdRole = 1, IdPermission = 3 },
+                new { IdRole = 1, IdPermission = 4 },
+                new { IdRole = 1, IdPermission = 5 },
+                new { IdRole = 2, IdPermission = 4 },
+                new { IdRole = 2, IdPermission = 5 });
         }
     }
 }

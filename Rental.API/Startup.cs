@@ -100,7 +100,11 @@ namespace Rental.API
             string connectionString = Configuration.GetConnectionString("AircraftRentalConnection");
             DataDirectoryConfig.SetDataDirectoryPath(ref connectionString);
 
-            services.AddDbContextPool<RentalContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContextPool<RentalContext>(options =>
+            {
+                options.UseSqlServer(connectionString);
+                // options.EnableSensitiveDataLogging();
+            });
 
             services.AddSwaggerGen(options =>
             {

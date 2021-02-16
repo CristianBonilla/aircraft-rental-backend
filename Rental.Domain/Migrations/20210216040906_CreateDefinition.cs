@@ -168,6 +168,31 @@ namespace Rental.Domain.Migrations
                     { 5, "RENTALS" }
                 });
 
+            migrationBuilder.InsertData(
+                schema: "dbo",
+                table: "Role",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "AdminUser" },
+                    { 2, "CommonUser" }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "dbo",
+                table: "RolePermission",
+                columns: new[] { "IdPermission", "IdRole" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 2, 1 },
+                    { 3, 1 },
+                    { 4, 1 },
+                    { 5, 1 },
+                    { 4, 2 },
+                    { 5, 2 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Permission_Name",
                 schema: "dbo",

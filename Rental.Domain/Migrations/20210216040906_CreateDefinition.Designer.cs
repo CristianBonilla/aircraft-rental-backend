@@ -10,7 +10,7 @@ using Rental.Domain;
 namespace Rental.Domain.Migrations
 {
     [DbContext(typeof(RentalContext))]
-    [Migration("20210214092642_CreateDefinition")]
+    [Migration("20210216040906_CreateDefinition")]
     partial class CreateDefinition
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -175,6 +175,18 @@ namespace Rental.Domain.Migrations
                         .IsUnique();
 
                     b.ToTable("Role", "dbo");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "AdminUser"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "CommonUser"
+                        });
                 });
 
             modelBuilder.Entity("Rental.Domain.RolePermissionEntity", b =>
@@ -190,6 +202,43 @@ namespace Rental.Domain.Migrations
                     b.HasIndex("IdPermission");
 
                     b.ToTable("RolePermission", "dbo");
+
+                    b.HasData(
+                        new
+                        {
+                            IdRole = 1,
+                            IdPermission = 1
+                        },
+                        new
+                        {
+                            IdRole = 1,
+                            IdPermission = 2
+                        },
+                        new
+                        {
+                            IdRole = 1,
+                            IdPermission = 3
+                        },
+                        new
+                        {
+                            IdRole = 1,
+                            IdPermission = 4
+                        },
+                        new
+                        {
+                            IdRole = 1,
+                            IdPermission = 5
+                        },
+                        new
+                        {
+                            IdRole = 2,
+                            IdPermission = 4
+                        },
+                        new
+                        {
+                            IdRole = 2,
+                            IdPermission = 5
+                        });
                 });
 
             modelBuilder.Entity("Rental.Domain.UserEntity", b =>
