@@ -72,23 +72,23 @@ namespace Rental.API
             {
                 options.AddPolicy("UsersPolicy", policy =>
                 {
-                    policy.AddRequirements(new RolPermissionsPolicyRequirement(Permissions.USERS));
+                    policy.AddRequirements(new RolPermissionsPolicyRequirement(Permissions.canUsers));
                 });
                 options.AddPolicy("RolesPolicy", policy =>
                 {
-                    policy.AddRequirements(new RolPermissionsPolicyRequirement(Permissions.ROLES));
+                    policy.AddRequirements(new RolPermissionsPolicyRequirement(Permissions.canRoles));
                 });
                 options.AddPolicy("PassengersPolicy", policy =>
                 {
-                    policy.AddRequirements(new RolPermissionsPolicyRequirement(Permissions.PASSENGERS));
+                    policy.AddRequirements(new RolPermissionsPolicyRequirement(Permissions.canPassengers));
                 });
                 options.AddPolicy("RentalsPolicy", policy =>
                 {
-                    policy.AddRequirements(new RolPermissionsPolicyRequirement(Permissions.RENTALS));
+                    policy.AddRequirements(new RolPermissionsPolicyRequirement(Permissions.canRentals));
                 });
                 options.AddPolicy("AircraftsPolicy", policy =>
                 {
-                    policy.AddRequirements(new RolPermissionsPolicyRequirement(Permissions.AIRCRAFTS));
+                    policy.AddRequirements(new RolPermissionsPolicyRequirement(Permissions.canAircrafts));
                 });
             });
             services.AddSingleton<IAuthorizationHandler, RolPermissionsPolicyHandler>();

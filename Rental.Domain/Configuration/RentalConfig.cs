@@ -39,11 +39,11 @@ namespace Rental.Domain
                 .IsRequired();
             builder.HasOne(o => o.Passenger)
                 .WithMany()
-                .HasForeignKey(f => f.IdPassenger)
+                .HasForeignKey(f => f.PassengerId)
                 .OnDelete(DeleteBehavior.NoAction);
             builder.HasOne(o => o.Aircraft)
                 .WithMany()
-                .HasForeignKey(f => f.IdAircraft)
+                .HasForeignKey(f => f.AircraftId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

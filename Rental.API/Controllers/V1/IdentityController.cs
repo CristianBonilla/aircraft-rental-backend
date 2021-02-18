@@ -33,6 +33,9 @@ namespace Rental.API.Controllers.V1
         {
             UserEntity user = mapper.Map<UserEntity>(userRegisterRequest);
             AuthenticationResult authResponse = await identityService.Register(user, userRegisterRequest.Role);
+
+            await Task.Delay(5000);
+
             if (!authResponse.Success)
             {
                 return BadRequest(new AuthFailedResponse
@@ -52,6 +55,9 @@ namespace Rental.API.Controllers.V1
         public async Task<IActionResult> Login([FromBody] UserLoginRequest userLoginRequest)
         {
             AuthenticationResult authResponse = await identityService.Login(userLoginRequest);
+
+            await Task.Delay(5000);
+
             if (!authResponse.Success)
             {
                 return BadRequest(new AuthFailedResponse

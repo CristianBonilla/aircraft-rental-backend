@@ -12,7 +12,7 @@ namespace Rental.API
                 .ReverseMap();
             CreateMap<UserRegisterRequest, UserEntity>()
                 .ForMember(m => m.Id, m => m.Ignore())
-                .ForMember(m => m.IdRole, m => m.Ignore())
+                .ForMember(m => m.RoleId, m => m.Ignore())
                 .ForMember(m => m.Role, m => m.Ignore())
                 .ReverseMap()
                 .ForMember(m => m.Role, m => m.Ignore());

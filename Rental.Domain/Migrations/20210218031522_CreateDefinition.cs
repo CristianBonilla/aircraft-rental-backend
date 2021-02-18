@@ -78,8 +78,8 @@ namespace Rental.Domain.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IdPassenger = table.Column<int>(type: "int", nullable: false),
-                    IdAircraft = table.Column<int>(type: "int", nullable: false),
+                    PassengerId = table.Column<int>(type: "int", nullable: false),
+                    AircraftId = table.Column<int>(type: "int", nullable: false),
                     Location = table.Column<string>(type: "varchar(max)", nullable: false),
                     ArrivalDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DepartureDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -88,15 +88,15 @@ namespace Rental.Domain.Migrations
                 {
                     table.PrimaryKey("PK_Rental", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Rental_Aircraft_IdAircraft",
-                        column: x => x.IdAircraft,
+                        name: "FK_Rental_Aircraft_AircraftId",
+                        column: x => x.AircraftId,
                         principalSchema: "dbo",
                         principalTable: "Aircraft",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Rental_Passenger_IdPassenger",
-                        column: x => x.IdPassenger,
+                        name: "FK_Rental_Passenger_PassengerId",
+                        column: x => x.PassengerId,
                         principalSchema: "dbo",
                         principalTable: "Passenger",
                         principalColumn: "Id");
@@ -107,22 +107,22 @@ namespace Rental.Domain.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    IdRole = table.Column<int>(type: "int", nullable: false),
-                    IdPermission = table.Column<int>(type: "int", nullable: false)
+                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    PermissionId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RolePermission", x => new { x.IdRole, x.IdPermission });
+                    table.PrimaryKey("PK_RolePermission", x => new { x.RoleId, x.PermissionId });
                     table.ForeignKey(
-                        name: "FK_RolePermission_Permission_IdPermission",
-                        column: x => x.IdPermission,
+                        name: "FK_RolePermission_Permission_PermissionId",
+                        column: x => x.PermissionId,
                         principalSchema: "dbo",
                         principalTable: "Permission",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RolePermission_Role_IdRole",
-                        column: x => x.IdRole,
+                        name: "FK_RolePermission_Role_RoleId",
+                        column: x => x.RoleId,
                         principalSchema: "dbo",
                         principalTable: "Role",
                         principalColumn: "Id",
@@ -136,7 +136,7 @@ namespace Rental.Domain.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IdRole = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false),
                     Username = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Password = table.Column<string>(type: "varchar(max)", nullable: false),
                     Email = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
@@ -147,8 +147,8 @@ namespace Rental.Domain.Migrations
                 {
                     table.PrimaryKey("PK_User", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_User_Role_IdRole",
-                        column: x => x.IdRole,
+                        name: "FK_User_Role_RoleId",
+                        column: x => x.RoleId,
                         principalSchema: "dbo",
                         principalTable: "Role",
                         principalColumn: "Id",
@@ -161,11 +161,11 @@ namespace Rental.Domain.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { 1, "ROLES" },
-                    { 2, "USERS" },
-                    { 3, "AIRCRAFTS" },
-                    { 4, "PASSENGERS" },
-                    { 5, "RENTALS" }
+                    { 1, "canRoles" },
+                    { 2, "canUsers" },
+                    { 3, "canAircrafts" },
+                    { 4, "canPassengers" },
+                    { 5, "canRentals" }
                 });
 
             migrationBuilder.InsertData(
@@ -181,7 +181,7 @@ namespace Rental.Domain.Migrations
             migrationBuilder.InsertData(
                 schema: "dbo",
                 table: "RolePermission",
-                columns: new[] { "IdPermission", "IdRole" },
+                columns: new[] { "PermissionId", "RoleId" },
                 values: new object[,]
                 {
                     { 1, 1 },
@@ -201,16 +201,16 @@ namespace Rental.Domain.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rental_IdAircraft",
+                name: "IX_Rental_AircraftId",
                 schema: "dbo",
                 table: "Rental",
-                column: "IdAircraft");
+                column: "AircraftId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rental_IdPassenger",
+                name: "IX_Rental_PassengerId",
                 schema: "dbo",
                 table: "Rental",
-                column: "IdPassenger");
+                column: "PassengerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Role_Name",
@@ -220,16 +220,16 @@ namespace Rental.Domain.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_RolePermission_IdPermission",
+                name: "IX_RolePermission_PermissionId",
                 schema: "dbo",
                 table: "RolePermission",
-                column: "IdPermission");
+                column: "PermissionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_User_IdRole",
+                name: "IX_User_RoleId",
                 schema: "dbo",
                 table: "User",
-                column: "IdRole");
+                column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_Username_Email",

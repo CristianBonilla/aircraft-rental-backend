@@ -31,7 +31,7 @@ namespace Rental.Domain
                 .IsRequired();
             builder.HasOne(o => o.Role)
                 .WithMany()
-                .HasForeignKey(f => f.IdRole)
+                .HasForeignKey(f => f.RoleId)
                 .OnDelete(DeleteBehavior.Cascade);
             builder.HasIndex(i => new { i.Username, i.Email })
                 .IsUnique();

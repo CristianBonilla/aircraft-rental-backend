@@ -98,27 +98,27 @@ namespace Rental.Domain.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "ROLES"
+                            Name = "canRoles"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "USERS"
+                            Name = "canUsers"
                         },
                         new
                         {
                             Id = 3,
-                            Name = "AIRCRAFTS"
+                            Name = "canAircrafts"
                         },
                         new
                         {
                             Id = 4,
-                            Name = "PASSENGERS"
+                            Name = "canPassengers"
                         },
                         new
                         {
                             Id = 5,
-                            Name = "RENTALS"
+                            Name = "canRentals"
                         });
                 });
 
@@ -129,27 +129,27 @@ namespace Rental.Domain.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("AircraftId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("ArrivalDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DepartureDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("IdAircraft")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdPassenger")
-                        .HasColumnType("int");
-
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("varchar(max)");
 
+                    b.Property<int>("PassengerId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("IdAircraft");
+                    b.HasIndex("AircraftId");
 
-                    b.HasIndex("IdPassenger");
+                    b.HasIndex("PassengerId");
 
                     b.ToTable("Rental", "dbo");
                 });
@@ -189,53 +189,53 @@ namespace Rental.Domain.Migrations
 
             modelBuilder.Entity("Rental.Domain.RolePermissionEntity", b =>
                 {
-                    b.Property<int>("IdRole")
+                    b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdPermission")
+                    b.Property<int>("PermissionId")
                         .HasColumnType("int");
 
-                    b.HasKey("IdRole", "IdPermission");
+                    b.HasKey("RoleId", "PermissionId");
 
-                    b.HasIndex("IdPermission");
+                    b.HasIndex("PermissionId");
 
                     b.ToTable("RolePermission", "dbo");
 
                     b.HasData(
                         new
                         {
-                            IdRole = 1,
-                            IdPermission = 1
+                            RoleId = 1,
+                            PermissionId = 1
                         },
                         new
                         {
-                            IdRole = 1,
-                            IdPermission = 2
+                            RoleId = 1,
+                            PermissionId = 2
                         },
                         new
                         {
-                            IdRole = 1,
-                            IdPermission = 3
+                            RoleId = 1,
+                            PermissionId = 3
                         },
                         new
                         {
-                            IdRole = 1,
-                            IdPermission = 4
+                            RoleId = 1,
+                            PermissionId = 4
                         },
                         new
                         {
-                            IdRole = 1,
-                            IdPermission = 5
+                            RoleId = 1,
+                            PermissionId = 5
                         },
                         new
                         {
-                            IdRole = 2,
-                            IdPermission = 4
+                            RoleId = 2,
+                            PermissionId = 4
                         },
                         new
                         {
-                            IdRole = 2,
-                            IdPermission = 5
+                            RoleId = 2,
+                            PermissionId = 5
                         });
                 });
 
@@ -258,9 +258,6 @@ namespace Rental.Domain.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(30)");
 
-                    b.Property<int>("IdRole")
-                        .HasColumnType("int");
-
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -271,6 +268,9 @@ namespace Rental.Domain.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(max)");
 
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -278,7 +278,7 @@ namespace Rental.Domain.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdRole");
+                    b.HasIndex("RoleId");
 
                     b.HasIndex("Username", "Email")
                         .IsUnique();
@@ -290,13 +290,13 @@ namespace Rental.Domain.Migrations
                 {
                     b.HasOne("Rental.Domain.AircraftEntity", "Aircraft")
                         .WithMany()
-                        .HasForeignKey("IdAircraft")
+                        .HasForeignKey("AircraftId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Rental.Domain.PassengerEntity", "Passenger")
                         .WithMany()
-                        .HasForeignKey("IdPassenger")
+                        .HasForeignKey("PassengerId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -309,13 +309,13 @@ namespace Rental.Domain.Migrations
                 {
                     b.HasOne("Rental.Domain.PermissionEntity", "Permission")
                         .WithMany()
-                        .HasForeignKey("IdPermission")
+                        .HasForeignKey("PermissionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Rental.Domain.RoleEntity", "Role")
                         .WithMany("Permissions")
-                        .HasForeignKey("IdRole")
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -328,7 +328,7 @@ namespace Rental.Domain.Migrations
                 {
                     b.HasOne("Rental.Domain.RoleEntity", "Role")
                         .WithMany()
-                        .HasForeignKey("IdRole")
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

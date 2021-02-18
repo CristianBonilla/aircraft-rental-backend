@@ -66,7 +66,7 @@ namespace Rental.API
                     Errors = new[] { "User password is invalid" }
                 };
             }
-            RoleEntity role = await authService.FindRole(r => r.Id == user.IdRole);
+            RoleEntity role = await authService.FindRole(r => r.Id == user.RoleId);
             string permissionsJson = await GetPermissionsByRole(role);
 
             return GenerateAuthenticationForUser(user, permissionsJson);

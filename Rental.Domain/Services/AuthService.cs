@@ -32,7 +32,7 @@ namespace Rental.Domain
         public async Task<RoleEntity> CreateRole(RoleEntity role, int[] permissionIDs)
         {
             var rolePermissions = permissionIDs.Distinct().Where(id => permissionRepository.Exists(p => p.Id == id))
-                .Select(id => new RolePermissionEntity { Role = role, IdPermission = id });
+                .Select(id => new RolePermissionEntity { Role = role, PermissionId = id });
             rolePermissionRepository.CreateAll(rolePermissions);
             _ = await context.SaveAsync();
 
@@ -77,8 +77,8 @@ namespace Rental.Domain
 
         public IAsyncEnumerable<PermissionEntity> PermissionsByRole(RoleEntity role)
         {
-            var permissions = rolePermissionRepository.Get(p => p.IdRole == role.Id, null, r => r.Permission)
-                .Select(p => permissionRepository.Find(p.IdPermission))
+            var permissions = rolePermissionRepository.Get(p => p.RoleId == role.Id, null, r => r.Permission)
+                .Select(p => permissionRepository.Find(p.PermissionId))
                 .ToAsyncEnumerable();
 
             return permissions;

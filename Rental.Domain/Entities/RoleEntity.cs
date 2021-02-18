@@ -10,11 +10,11 @@ namespace Rental.Domain
 
     public struct Permissions
     {
-        public const string ROLES = nameof(ROLES);
-        public const string USERS = nameof(USERS);
-        public const string AIRCRAFTS = nameof(AIRCRAFTS);
-        public const string PASSENGERS = nameof(PASSENGERS);
-        public const string RENTALS = nameof(RENTALS);
+        public const string canRoles = nameof(canRoles);
+        public const string canUsers = nameof(canUsers);
+        public const string canAircrafts = nameof(canAircrafts);
+        public const string canPassengers = nameof(canPassengers);
+        public const string canRentals = nameof(canRentals);
     }
 
     public class RoleEntity
@@ -32,8 +32,8 @@ namespace Rental.Domain
 
     public class RolePermissionEntity
     {
-        public int IdRole { get; set; }
-        public int IdPermission { get; set; }
+        public int RoleId { get; set; }
+        public int PermissionId { get; set; }
         public RoleEntity Role { get; set; }
         public PermissionEntity Permission { get; set; }
     }
