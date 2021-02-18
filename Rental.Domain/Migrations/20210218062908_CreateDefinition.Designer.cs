@@ -10,7 +10,7 @@ using Rental.Domain;
 namespace Rental.Domain.Migrations
 {
     [DbContext(typeof(RentalContext))]
-    [Migration("20210218031522_CreateDefinition")]
+    [Migration("20210218062908_CreateDefinition")]
     partial class CreateDefinition
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,9 +33,9 @@ namespace Rental.Domain.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(30)
+                        .HasMaxLength(100)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(30)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("State")
                         .HasColumnType("int");
@@ -54,18 +54,18 @@ namespace Rental.Domain.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(30)
+                        .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(30)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<long>("IdentificationDocument")
                         .HasColumnType("bigint");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(30)
+                        .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(30)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Specialty")
                         .IsRequired()
@@ -250,21 +250,21 @@ namespace Rental.Domain.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(30)");
-
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(30)
+                        .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(30)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -275,8 +275,8 @@ namespace Rental.Domain.Migrations
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 

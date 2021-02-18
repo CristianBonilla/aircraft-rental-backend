@@ -12,21 +12,21 @@ namespace Rental.Domain
             builder.Property(p => p.Id)
                 .ValueGeneratedOnAdd();
             builder.Property(p => p.Username)
-                .HasMaxLength(20)
+                .HasMaxLength(100)
                 .IsRequired();
             builder.Property(p => p.Password)
                 .HasColumnType("varchar(max)")
                 .IsRequired();
             builder.Property(p => p.Email)
-                .HasMaxLength(50)
+                .HasMaxLength(100)
                 .IsUnicode(false)
                 .IsRequired();
             builder.Property(p => p.FirstName)
-                .HasMaxLength(30)
+                .HasMaxLength(50)
                 .IsUnicode(false)
                 .IsRequired();
             builder.Property(p => p.LastName)
-                .HasMaxLength(30)
+                .HasMaxLength(50)
                 .IsUnicode(false)
                 .IsRequired();
             builder.HasOne(o => o.Role)

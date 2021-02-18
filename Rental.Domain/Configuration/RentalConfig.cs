@@ -12,7 +12,7 @@ namespace Rental.Domain
             builder.Property(p => p.Id)
                 .ValueGeneratedOnAdd();
             builder.Property(p => p.Name)
-                .HasMaxLength(30)
+                .HasMaxLength(100)
                 .IsUnicode()
                 .IsRequired();
             builder.Property(p => p.State)
@@ -59,11 +59,11 @@ namespace Rental.Domain
             builder.Property(p => p.IdentificationDocument)
                 .IsRequired();
             builder.Property(p => p.FirstName)
-                .HasMaxLength(30)
+                .HasMaxLength(50)
                 .IsUnicode(false)
                 .IsRequired();
             builder.Property(p => p.LastName)
-                .HasMaxLength(30)
+                .HasMaxLength(50)
                 .IsUnicode(false)
                 .IsRequired();
             builder.Property(p => p.Specialty)
