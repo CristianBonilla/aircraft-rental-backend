@@ -161,11 +161,11 @@ namespace Rental.Domain.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { 1, "canRoles" },
-                    { 2, "canUsers" },
-                    { 3, "canAircrafts" },
-                    { 4, "canPassengers" },
-                    { 5, "canRentals" }
+                    { 1, "CanActivateRoles" },
+                    { 2, "CanActivateUsers" },
+                    { 3, "CanActivateAircrafts" },
+                    { 4, "CanActivatePassengers" },
+                    { 5, "CanActivateRentals" }
                 });
 
             migrationBuilder.InsertData(
