@@ -38,11 +38,11 @@ namespace Rental.Domain
             builder.HasIndex(i => i.Name)
                 .IsUnique();
             builder.HasData(
-                new { Id = 1, Name = Permissions.CanActivateRoles },
-                new { Id = 2, Name = Permissions.CanActivateUsers },
-                new { Id = 3, Name = Permissions.CanActivateAircrafts },
-                new { Id = 4, Name = Permissions.CanActivatePassengers },
-                new { Id = 5, Name = Permissions.CanActivateRentals });
+                new { Id = 1, Name = Permissions.CanRoles },
+                new { Id = 2, Name = Permissions.CanUsers },
+                new { Id = 3, Name = Permissions.CanAircrafts },
+                new { Id = 4, Name = Permissions.CanPassengers },
+                new { Id = 5, Name = Permissions.CanRentals });
         }
     }
 

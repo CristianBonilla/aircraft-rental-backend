@@ -10,11 +10,11 @@ namespace Rental.Domain
 
     public struct Permissions
     {
-        public const string CanActivateRoles = nameof(CanActivateRoles);
-        public const string CanActivateUsers = nameof(CanActivateUsers);
-        public const string CanActivateAircrafts = nameof(CanActivateAircrafts);
-        public const string CanActivatePassengers = nameof(CanActivatePassengers);
-        public const string CanActivateRentals = nameof(CanActivateRentals);
+        public const string CanRoles = nameof(CanRoles);
+        public const string CanUsers = nameof(CanUsers);
+        public const string CanAircrafts = nameof(CanAircrafts);
+        public const string CanPassengers = nameof(CanPassengers);
+        public const string CanRentals = nameof(CanRentals);
     }
 
     public class RoleEntity

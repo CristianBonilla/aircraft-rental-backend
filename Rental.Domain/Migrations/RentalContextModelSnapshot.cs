@@ -98,27 +98,27 @@ namespace Rental.Domain.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "CanActivateRoles"
+                            Name = "CanRoles"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "CanActivateUsers"
+                            Name = "CanUsers"
                         },
                         new
                         {
                             Id = 3,
-                            Name = "CanActivateAircrafts"
+                            Name = "CanAircrafts"
                         },
                         new
                         {
                             Id = 4,
-                            Name = "CanActivatePassengers"
+                            Name = "CanPassengers"
                         },
                         new
                         {
                             Id = 5,
-                            Name = "CanActivateRentals"
+                            Name = "CanRentals"
                         });
                 });
 
