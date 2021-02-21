@@ -46,11 +46,8 @@ namespace Rental.API
 
         public async Task<AuthenticationResult> Login(UserLoginRequest userLoginRequest)
         {
-            UserEntity user = userLoginRequest.Type switch
-            {
-                UserLoginType.Username => await authService.FindUser(u => u.Username == userLoginRequest.UsernameOrEmail),
-                _ => await authService.FindUser(u => u.Email == userLoginRequest.UsernameOrEmail)
-            };
+            string usernameOrEmail = userLoginRequest.UsernameOrEmail;
+            UserEntity user = await authService.FindUser(u => u.Username == usernameOrEmail || u.Email == usernameOrEmail);
             if (user == null)
             {
                 return new AuthenticationResult
