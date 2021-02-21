@@ -26,7 +26,8 @@ namespace Rental.API
 {
     public class Startup
     {
-        public const string Bearer = nameof(Bearer);
+        const string Bearer = nameof(Bearer);
+        const string AllowOriginsPolicy = nameof(AllowOriginsPolicy);
 
         public Startup(IConfiguration configuration)
         {
@@ -130,6 +131,16 @@ namespace Rental.API
                 };
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement { { apiSecurity, new List<string>() } });
             });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(AllowOriginsPolicy, builder =>
+                {
+                    builder.WithOrigins("http://localhost:1130", "https://localhost:1130")
+                        .AllowAnyHeader()
+                        .WithMethods("GET", "POST", "PUT", "DELETE");
+                });
+            });
         }
 
         // Register your own things directly with Autofac here.
@@ -151,11 +162,13 @@ namespace Rental.API
 
             app.UseRouting();
 
+            //app.UseCors();
             // Global cors policy
-            app.UseCors(options => options
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
+            //app.UseCors(options => options
+            //    .AllowAnyOrigin()
+            //    .AllowAnyMethod()
+            //    .AllowAnyHeader());
+            app.UseCors(AllowOriginsPolicy);
 
             app.UseAuthentication();
             app.UseAuthorization();
