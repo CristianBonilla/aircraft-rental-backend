@@ -96,7 +96,9 @@ namespace Rental.API
             return new AuthenticationResult
             {
                 Success = true,
-                Token = tokenHandler.WriteToken(token)
+                Token = tokenHandler.WriteToken(token),
+                UserId = user.Id,
+                RoleId = user.Role.Id
             };
         }
 

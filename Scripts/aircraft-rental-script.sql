@@ -11,7 +11,7 @@ GO
 BEGIN TRANSACTION;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210220193602_CreateDefinition')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210221002136_CreateDefinition')
 BEGIN
     CREATE TABLE [dbo].[Aircraft] (
         [Id] int NOT NULL IDENTITY,
@@ -23,7 +23,7 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210220193602_CreateDefinition')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210221002136_CreateDefinition')
 BEGIN
     CREATE TABLE [dbo].[Passenger] (
         [Id] int NOT NULL IDENTITY,
@@ -36,7 +36,7 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210220193602_CreateDefinition')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210221002136_CreateDefinition')
 BEGIN
     CREATE TABLE [dbo].[Permission] (
         [Id] int NOT NULL IDENTITY,
@@ -46,17 +46,18 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210220193602_CreateDefinition')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210221002136_CreateDefinition')
 BEGIN
     CREATE TABLE [dbo].[Role] (
         [Id] int NOT NULL IDENTITY,
         [Name] varchar(30) NOT NULL,
+        [DisplayName] varchar(50) NOT NULL,
         CONSTRAINT [PK_Role] PRIMARY KEY ([Id])
     );
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210220193602_CreateDefinition')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210221002136_CreateDefinition')
 BEGIN
     CREATE TABLE [dbo].[Rental] (
         [Id] int NOT NULL IDENTITY,
@@ -72,7 +73,7 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210220193602_CreateDefinition')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210221002136_CreateDefinition')
 BEGIN
     CREATE TABLE [dbo].[RolePermission] (
         [RoleId] int NOT NULL,
@@ -84,7 +85,7 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210220193602_CreateDefinition')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210221002136_CreateDefinition')
 BEGIN
     CREATE TABLE [dbo].[User] (
         [Id] int NOT NULL IDENTITY,
@@ -100,7 +101,7 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210220193602_CreateDefinition')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210221002136_CreateDefinition')
 BEGIN
     IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name') AND [object_id] = OBJECT_ID(N'[dbo].[Permission]'))
         SET IDENTITY_INSERT [dbo].[Permission] ON;
@@ -115,19 +116,19 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210220193602_CreateDefinition')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210221002136_CreateDefinition')
 BEGIN
-    IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name') AND [object_id] = OBJECT_ID(N'[dbo].[Role]'))
+    IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'DisplayName', N'Name') AND [object_id] = OBJECT_ID(N'[dbo].[Role]'))
         SET IDENTITY_INSERT [dbo].[Role] ON;
-    EXEC(N'INSERT INTO [dbo].[Role] ([Id], [Name])
-    VALUES (1, ''AdminUser''),
-    (2, ''CommonUser'')');
-    IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name') AND [object_id] = OBJECT_ID(N'[dbo].[Role]'))
+    EXEC(N'INSERT INTO [dbo].[Role] ([Id], [DisplayName], [Name])
+    VALUES (1, ''Administrador'', ''AdminUser''),
+    (2, ''Usuario'', ''CommonUser'')');
+    IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'DisplayName', N'Name') AND [object_id] = OBJECT_ID(N'[dbo].[Role]'))
         SET IDENTITY_INSERT [dbo].[Role] OFF;
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210220193602_CreateDefinition')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210221002136_CreateDefinition')
 BEGIN
     IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'PermissionId', N'RoleId') AND [object_id] = OBJECT_ID(N'[dbo].[RolePermission]'))
         SET IDENTITY_INSERT [dbo].[RolePermission] ON;
@@ -144,52 +145,52 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210220193602_CreateDefinition')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210221002136_CreateDefinition')
 BEGIN
     CREATE UNIQUE INDEX [IX_Permission_Name] ON [dbo].[Permission] ([Name]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210220193602_CreateDefinition')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210221002136_CreateDefinition')
 BEGIN
     CREATE INDEX [IX_Rental_AircraftId] ON [dbo].[Rental] ([AircraftId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210220193602_CreateDefinition')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210221002136_CreateDefinition')
 BEGIN
     CREATE INDEX [IX_Rental_PassengerId] ON [dbo].[Rental] ([PassengerId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210220193602_CreateDefinition')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210221002136_CreateDefinition')
 BEGIN
-    CREATE UNIQUE INDEX [IX_Role_Name] ON [dbo].[Role] ([Name]);
+    CREATE UNIQUE INDEX [IX_Role_Name_DisplayName] ON [dbo].[Role] ([Name], [DisplayName]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210220193602_CreateDefinition')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210221002136_CreateDefinition')
 BEGIN
     CREATE INDEX [IX_RolePermission_PermissionId] ON [dbo].[RolePermission] ([PermissionId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210220193602_CreateDefinition')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210221002136_CreateDefinition')
 BEGIN
     CREATE INDEX [IX_User_RoleId] ON [dbo].[User] ([RoleId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210220193602_CreateDefinition')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210221002136_CreateDefinition')
 BEGIN
     CREATE UNIQUE INDEX [IX_User_Username_Email] ON [dbo].[User] ([Username], [Email]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210220193602_CreateDefinition')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20210221002136_CreateDefinition')
 BEGIN
     INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-    VALUES (N'20210220193602_CreateDefinition', N'5.0.3');
+    VALUES (N'20210221002136_CreateDefinition', N'5.0.3');
 END;
 GO
 

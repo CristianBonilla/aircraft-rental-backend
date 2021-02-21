@@ -64,7 +64,8 @@ namespace Rental.Domain.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(30)", unicode: false, maxLength: 30, nullable: false)
+                    Name = table.Column<string>(type: "varchar(30)", unicode: false, maxLength: 30, nullable: false),
+                    DisplayName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -171,11 +172,11 @@ namespace Rental.Domain.Migrations
             migrationBuilder.InsertData(
                 schema: "dbo",
                 table: "Role",
-                columns: new[] { "Id", "Name" },
+                columns: new[] { "Id", "DisplayName", "Name" },
                 values: new object[,]
                 {
-                    { 1, "AdminUser" },
-                    { 2, "CommonUser" }
+                    { 1, "Administrador", "AdminUser" },
+                    { 2, "Usuario", "CommonUser" }
                 });
 
             migrationBuilder.InsertData(
@@ -213,10 +214,10 @@ namespace Rental.Domain.Migrations
                 column: "PassengerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Role_Name",
+                name: "IX_Role_Name_DisplayName",
                 schema: "dbo",
                 table: "Role",
-                column: "Name",
+                columns: new[] { "Name", "DisplayName" },
                 unique: true);
 
             migrationBuilder.CreateIndex(

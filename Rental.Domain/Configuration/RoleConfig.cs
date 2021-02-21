@@ -15,11 +15,15 @@ namespace Rental.Domain
                 .HasMaxLength(30)
                 .IsUnicode(false)
                 .IsRequired();
-            builder.HasIndex(i => i.Name)
+            builder.Property(p => p.DisplayName)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .IsRequired();
+            builder.HasIndex(i => new { i.Name, i.DisplayName })
                 .IsUnique();
             builder.HasData(
-                new { Id = 1, Name = DefaultRoles.AdminUser },
-                new { Id = 2, Name = DefaultRoles.CommonUser });
+                new { Id = 1, Name = DefaultRoles.AdminUser, DisplayName = "Administrador" },
+                new { Id = 2, Name = DefaultRoles.CommonUser, DisplayName = "Usuario" });
         }
     }
 

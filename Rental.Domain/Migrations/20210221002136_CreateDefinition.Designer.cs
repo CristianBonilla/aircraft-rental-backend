@@ -10,7 +10,7 @@ using Rental.Domain;
 namespace Rental.Domain.Migrations
 {
     [DbContext(typeof(RentalContext))]
-    [Migration("20210220193602_CreateDefinition")]
+    [Migration("20210221002136_CreateDefinition")]
     partial class CreateDefinition
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -163,6 +163,12 @@ namespace Rental.Domain.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -171,7 +177,7 @@ namespace Rental.Domain.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
+                    b.HasIndex("Name", "DisplayName")
                         .IsUnique();
 
                     b.ToTable("Role", "dbo");
@@ -180,11 +186,13 @@ namespace Rental.Domain.Migrations
                         new
                         {
                             Id = 1,
+                            DisplayName = "Administrador",
                             Name = "AdminUser"
                         },
                         new
                         {
                             Id = 2,
+                            DisplayName = "Usuario",
                             Name = "CommonUser"
                         });
                 });

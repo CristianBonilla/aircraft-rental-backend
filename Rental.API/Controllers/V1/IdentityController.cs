@@ -46,7 +46,9 @@ namespace Rental.API.Controllers.V1
 
             return Ok(new AuthSuccessResponse
             {
-                Token = authResponse.Token
+                Token = authResponse.Token,
+                UserId = authResponse.UserId,
+                RoleId = authResponse.RoleId
             });
         }
 
@@ -68,7 +70,9 @@ namespace Rental.API.Controllers.V1
 
             return Ok(new AuthSuccessResponse
             {
-                Token = authResponse.Token
+                Token = authResponse.Token,
+                UserId = authResponse.UserId,
+                RoleId = authResponse.RoleId
             });
         }
 
@@ -81,9 +85,10 @@ namespace Rental.API.Controllers.V1
                 return BadRequest(new { Errors = new[] { "The role is already registered" } });
             if (!roleRequest.PermissionsIDs.Any())
                 return BadRequest(new { Errors = new[] { "The permissions to grant the role were not defined" } });
-            RoleEntity role = await authService.CreateRole(new RoleEntity { Name = roleRequest.Name }, roleRequest.PermissionsIDs);
+            RoleEntity role = mapper.Map<RoleEntity>(roleRequest);
+            RoleEntity roleCreated = await authService.CreateRole(role, roleRequest.PermissionsIDs);
 
-            return Ok(role);
+            return Ok(roleCreated);
         }
 
         [Authorize(Policy = "RolesPolicy")]

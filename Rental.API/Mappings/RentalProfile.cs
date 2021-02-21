@@ -21,6 +21,10 @@ namespace Rental.API
                 .ForMember(m => m.Aircraft, m => m.Ignore())
                 .ForMember(m => m.Passenger, m => m.Ignore())
                 .ReverseMap();
+            CreateMap<RoleRequest, RoleEntity>()
+                .ForMember(m => m.Id, m => m.Ignore())
+                .ForMember(m => m.Permissions, m => m.Ignore())
+                .ReverseMap();
             CreateMap<PassengerRequest, PassengerEntity>()
                 .ForMember(m => m.Id, m => m.Ignore())
                 .ReverseMap();
