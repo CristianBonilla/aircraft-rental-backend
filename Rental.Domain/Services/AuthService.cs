@@ -77,8 +77,9 @@ namespace Rental.Domain
 
         public IAsyncEnumerable<PermissionEntity> PermissionsByRole(RoleEntity role)
         {
-            var permissions = rolePermissionRepository.Get(p => p.RoleId == role.Id, null, r => r.Permission)
+            var permissions = rolePermissionRepository.Get(p => p.RoleId == role.Id, null, i => i.Permission)
                 .Select(p => permissionRepository.Find(p.PermissionId))
+                .OrderBy(o => o.Id)
                 .ToAsyncEnumerable();
 
             return permissions;
