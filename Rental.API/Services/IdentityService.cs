@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Claims;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -39,9 +40,8 @@ namespace Rental.API
             }
             user.Role = role;
             UserEntity userCreated = await authService.CreateUser(user);
-            string permissionsJson = await GetPermissionsByRole(role);
 
-            return GenerateAuthenticationForUser(userCreated, permissionsJson);
+            return await GenerateAuthenticationForUser(userCreated, role);
         }
 
         public async Task<AuthenticationResult> Login(UserLoginRequest userLoginRequest)
@@ -64,13 +64,14 @@ namespace Rental.API
                 };
             }
             RoleEntity role = await authService.FindRole(r => r.Id == user.RoleId);
-            string permissionsJson = await GetPermissionsByRole(role);
 
-            return GenerateAuthenticationForUser(user, permissionsJson);
+            return await GenerateAuthenticationForUser(user, role);
         }
 
-        private AuthenticationResult GenerateAuthenticationForUser(UserEntity user, string permissionsJson)
+        private async Task<AuthenticationResult> GenerateAuthenticationForUser(UserEntity user, RoleEntity role)
         {
+            var permissions = await authService.PermissionsByRole(role).ToListAsync();
+            string permissionsJson = PermissionsToJson(permissions);
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
             byte[] key = Encoding.ASCII.GetBytes(jwtSettings.Secret);
             SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
@@ -94,19 +95,10 @@ namespace Rental.API
             {
                 Success = true,
                 Token = tokenHandler.WriteToken(token),
-                UserId = user.Id,
-                RoleId = user.Role.Id
+                User = user,
+                Role = role,
+                Permissions = permissions
             };
-        }
-
-        private async Task<string> GetPermissionsByRole(RoleEntity role)
-        {
-            var permissions = await authService.PermissionsByRole(role)
-                .Select(p => p.Name)
-                .ToListAsync();
-            var permissionsJson = JsonConvert.SerializeObject(permissions, Formatting.Indented);
-
-            return permissionsJson;
         }
 
         private async Task<RoleEntity> GetRole(string roleName = null)
@@ -117,6 +109,14 @@ namespace Rental.API
             string defaultRoleName = emptyUsers ? DefaultRoles.AdminUser : DefaultRoles.CommonUser;
 
             return await authService.FindRole(r => r.Name == defaultRoleName);
+        }
+
+        private static string PermissionsToJson(ICollection<PermissionEntity> permissions)
+        {
+            var permissionNames = permissions.Select(p => p.Name).ToList();
+            string permissionsJson = JsonConvert.SerializeObject(permissionNames, Formatting.Indented);
+
+            return permissionsJson;
         }
     }
 }

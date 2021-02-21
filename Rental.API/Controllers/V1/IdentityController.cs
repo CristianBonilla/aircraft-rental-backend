@@ -1,11 +1,11 @@
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using AutoMapper;
 using Rental.Domain;
-using System.Collections.Generic;
 
 namespace Rental.API.Controllers.V1
 {
@@ -43,12 +43,15 @@ namespace Rental.API.Controllers.V1
                     Errors = authResponse.Errors
                 });
             }
+            UserResponse userResponse = mapper.Map<UserResponse>(authResponse.User);
+            RoleResponse roleResponse = mapper.Map<RoleResponse>(authResponse.Role);
 
             return Ok(new AuthSuccessResponse
             {
                 Token = authResponse.Token,
-                UserId = authResponse.UserId,
-                RoleId = authResponse.RoleId
+                User = userResponse,
+                Role = roleResponse,
+                Permissions = authResponse.Permissions
             });
         }
 
@@ -67,12 +70,15 @@ namespace Rental.API.Controllers.V1
                     Errors = authResponse.Errors
                 });
             }
+            UserResponse userResponse = mapper.Map<UserResponse>(authResponse.User);
+            RoleResponse roleResponse = mapper.Map<RoleResponse>(authResponse.Role);
 
             return Ok(new AuthSuccessResponse
             {
                 Token = authResponse.Token,
-                UserId = authResponse.UserId,
-                RoleId = authResponse.RoleId
+                User = userResponse,
+                Role = roleResponse,
+                Permissions = authResponse.Permissions
             });
         }
 
