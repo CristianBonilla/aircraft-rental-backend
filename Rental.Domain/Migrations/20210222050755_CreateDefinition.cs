@@ -164,9 +164,9 @@ namespace Rental.Domain.Migrations
                 {
                     { 1, "CanRoles" },
                     { 2, "CanUsers" },
-                    { 3, "CanAircrafts" },
-                    { 4, "CanPassengers" },
-                    { 5, "CanRentals" }
+                    { 3, "CanRentals" },
+                    { 4, "CanAircrafts" },
+                    { 5, "CanPassengers" }
                 });
 
             migrationBuilder.InsertData(
@@ -190,7 +190,7 @@ namespace Rental.Domain.Migrations
                     { 3, 1 },
                     { 4, 1 },
                     { 5, 1 },
-                    { 4, 2 },
+                    { 3, 2 },
                     { 5, 2 }
                 });
 

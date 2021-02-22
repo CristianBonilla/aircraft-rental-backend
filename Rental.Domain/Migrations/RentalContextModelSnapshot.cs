@@ -108,17 +108,17 @@ namespace Rental.Domain.Migrations
                         new
                         {
                             Id = 3,
-                            Name = "CanAircrafts"
+                            Name = "CanRentals"
                         },
                         new
                         {
                             Id = 4,
-                            Name = "CanPassengers"
+                            Name = "CanAircrafts"
                         },
                         new
                         {
                             Id = 5,
-                            Name = "CanRentals"
+                            Name = "CanPassengers"
                         });
                 });
 
@@ -238,7 +238,7 @@ namespace Rental.Domain.Migrations
                         new
                         {
                             RoleId = 2,
-                            PermissionId = 4
+                            PermissionId = 3
                         },
                         new
                         {

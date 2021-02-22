@@ -12,9 +12,9 @@ namespace Rental.Domain
     {
         public const string CanRoles = nameof(CanRoles);
         public const string CanUsers = nameof(CanUsers);
+        public const string CanRentals = nameof(CanRentals);
         public const string CanAircrafts = nameof(CanAircrafts);
         public const string CanPassengers = nameof(CanPassengers);
-        public const string CanRentals = nameof(CanRentals);
     }
 
     public class RoleEntity

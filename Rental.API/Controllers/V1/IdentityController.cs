@@ -34,7 +34,7 @@ namespace Rental.API.Controllers.V1
             UserEntity user = mapper.Map<UserEntity>(userRegisterRequest);
             AuthenticationResult authResponse = await identityService.Register(user, userRegisterRequest.Role);
 
-            await Task.Delay(5000);
+            await Task.Delay(3000);
 
             if (!authResponse.Success)
             {
@@ -61,7 +61,7 @@ namespace Rental.API.Controllers.V1
         {
             AuthenticationResult authResponse = await identityService.Login(userLoginRequest);
 
-            await Task.Delay(5000);
+            await Task.Delay(3000);
 
             if (!authResponse.Success)
             {

@@ -44,9 +44,9 @@ namespace Rental.Domain
             builder.HasData(
                 new { Id = 1, Name = Permissions.CanRoles },
                 new { Id = 2, Name = Permissions.CanUsers },
-                new { Id = 3, Name = Permissions.CanAircrafts },
-                new { Id = 4, Name = Permissions.CanPassengers },
-                new { Id = 5, Name = Permissions.CanRentals });
+                new { Id = 3, Name = Permissions.CanRentals },
+                new { Id = 4, Name = Permissions.CanAircrafts },
+                new { Id = 5, Name = Permissions.CanPassengers });
         }
     }
 
@@ -68,7 +68,7 @@ namespace Rental.Domain
                 new { RoleId = 1, PermissionId = 3 },
                 new { RoleId = 1, PermissionId = 4 },
                 new { RoleId = 1, PermissionId = 5 },
-                new { RoleId = 2, PermissionId = 4 },
+                new { RoleId = 2, PermissionId = 3 },
                 new { RoleId = 2, PermissionId = 5 });
         }
     }
