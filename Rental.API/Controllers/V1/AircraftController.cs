@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 namespace Rental.API.Controllers.V1
 {
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "AircraftsPolicy")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme/*, Policy = "AircraftsPolicy" */)]
     public class AircraftController : ControllerBase
     {
         readonly IMapper mapper;
@@ -44,6 +44,7 @@ namespace Rental.API.Controllers.V1
                 yield return aircraft;
         }
 
+        [Authorize(Policy = "AircraftsPolicy")]
         [HttpPost(ApiRoutes.Aircraft.Create)]
         public async Task<IActionResult> Post([FromBody] AircraftRequest aircraftRequest)
         {
@@ -53,6 +54,7 @@ namespace Rental.API.Controllers.V1
             return Ok(aircraftCreated);
         }
 
+        [Authorize(Policy = "AircraftsPolicy")]
         [HttpPut(ApiRoutes.Aircraft.Update)]
         public async Task<IActionResult> Put(int id, [FromBody] AircraftRequest aircraftRequest)
         {
@@ -65,6 +67,7 @@ namespace Rental.API.Controllers.V1
             return Ok(aircraftUpdated);
         }
 
+        [Authorize(Policy = "AircraftsPolicy")]
         [HttpDelete(ApiRoutes.Aircraft.Delete)]
         public async Task<IActionResult> Delete(int id)
         {
