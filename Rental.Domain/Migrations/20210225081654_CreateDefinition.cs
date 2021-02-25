@@ -50,7 +50,8 @@ namespace Rental.Domain.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false)
+                    Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
+                    DisplayName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -159,14 +160,14 @@ namespace Rental.Domain.Migrations
             migrationBuilder.InsertData(
                 schema: "dbo",
                 table: "Permission",
-                columns: new[] { "Id", "Name" },
+                columns: new[] { "Id", "DisplayName", "Name" },
                 values: new object[,]
                 {
-                    { 1, "CanRoles" },
-                    { 2, "CanUsers" },
-                    { 3, "CanRentals" },
-                    { 4, "CanAircrafts" },
-                    { 5, "CanPassengers" }
+                    { 1, "Roles", "CanRoles" },
+                    { 2, "Usuarios", "CanUsers" },
+                    { 3, "Alquileres", "CanRentals" },
+                    { 4, "Aeronaves", "CanAircrafts" },
+                    { 5, "Pasajeros", "CanPassengers" }
                 });
 
             migrationBuilder.InsertData(
@@ -195,10 +196,10 @@ namespace Rental.Domain.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Permission_Name",
+                name: "IX_Permission_Name_DisplayName",
                 schema: "dbo",
                 table: "Permission",
-                column: "Name",
+                columns: new[] { "Name", "DisplayName" },
                 unique: true);
 
             migrationBuilder.CreateIndex(

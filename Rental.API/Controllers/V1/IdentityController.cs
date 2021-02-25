@@ -119,7 +119,6 @@ namespace Rental.API.Controllers.V1
             return Ok(user);
         }
 
-        [Authorize(Policy = "RolesPolicy")]
         [HttpGet(ApiRoutes.Identity.GetRoles)]
         public async IAsyncEnumerable<RoleEntity> GetRoles()
         {

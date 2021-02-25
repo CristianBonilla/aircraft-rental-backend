@@ -10,7 +10,7 @@ using Rental.Domain;
 namespace Rental.Domain.Migrations
 {
     [DbContext(typeof(RentalContext))]
-    [Migration("20210222050755_CreateDefinition")]
+    [Migration("20210225081654_CreateDefinition")]
     partial class CreateDefinition
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -83,6 +83,12 @@ namespace Rental.Domain.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -91,7 +97,7 @@ namespace Rental.Domain.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
+                    b.HasIndex("Name", "DisplayName")
                         .IsUnique();
 
                     b.ToTable("Permission", "dbo");
@@ -100,26 +106,31 @@ namespace Rental.Domain.Migrations
                         new
                         {
                             Id = 1,
+                            DisplayName = "Roles",
                             Name = "CanRoles"
                         },
                         new
                         {
                             Id = 2,
+                            DisplayName = "Usuarios",
                             Name = "CanUsers"
                         },
                         new
                         {
                             Id = 3,
+                            DisplayName = "Alquileres",
                             Name = "CanRentals"
                         },
                         new
                         {
                             Id = 4,
+                            DisplayName = "Aeronaves",
                             Name = "CanAircrafts"
                         },
                         new
                         {
                             Id = 5,
+                            DisplayName = "Pasajeros",
                             Name = "CanPassengers"
                         });
                 });

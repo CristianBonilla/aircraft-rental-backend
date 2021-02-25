@@ -39,14 +39,18 @@ namespace Rental.Domain
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .IsRequired();
-            builder.HasIndex(i => i.Name)
+            builder.Property(p => p.DisplayName)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .IsRequired();
+            builder.HasIndex(i => new { i.Name, i.DisplayName })
                 .IsUnique();
             builder.HasData(
-                new { Id = 1, Name = Permissions.CanRoles },
-                new { Id = 2, Name = Permissions.CanUsers },
-                new { Id = 3, Name = Permissions.CanRentals },
-                new { Id = 4, Name = Permissions.CanAircrafts },
-                new { Id = 5, Name = Permissions.CanPassengers });
+                new { Id = 1, Name = Permissions.CanRoles, DisplayName = "Roles" },
+                new { Id = 2, Name = Permissions.CanUsers, DisplayName = "Usuarios" },
+                new { Id = 3, Name = Permissions.CanRentals, DisplayName = "Alquileres" },
+                new { Id = 4, Name = Permissions.CanAircrafts, DisplayName = "Aeronaves" },
+                new { Id = 5, Name = Permissions.CanPassengers, DisplayName = "Pasajeros" });
         }
     }
 
