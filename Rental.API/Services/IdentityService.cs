@@ -20,9 +20,16 @@ namespace Rental.API
         public IdentityService(IAuthService authService, IOptions<JwtSettings> options) =>
             (this.authService, jwtSettings) = (authService, options.Value);
 
-        public async Task<AuthenticationResult> Register(UserEntity user, string roleName = null)
+        public async Task<bool> UserExists(UserEntity user)
         {
             bool existingUser = await authService.UserExists(u => u.Username == user.Username || u.Email == user.Email);
+
+            return existingUser;
+        }
+
+        public async Task<AuthenticationResult> Register(UserEntity user, string roleName = null)
+        {
+            bool existingUser = await UserExists(user);
             if (existingUser)
             {
                 return new AuthenticationResult

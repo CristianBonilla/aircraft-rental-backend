@@ -26,16 +26,13 @@ namespace Rental.API.Controllers.V1
             this.authService = authService;
             this.identityService = identityService;
         }
-            
+
         [AllowAnonymous]
         [HttpPost(ApiRoutes.Identity.Register)]
         public async Task<IActionResult> Register([FromBody] UserRegisterRequest userRegisterRequest)
         {
             UserEntity user = mapper.Map<UserEntity>(userRegisterRequest);
             AuthenticationResult authResponse = await identityService.Register(user, userRegisterRequest.Role);
-
-            await Task.Delay(3000);
-
             if (!authResponse.Success)
             {
                 return BadRequest(new AuthFailedResponse
@@ -60,9 +57,6 @@ namespace Rental.API.Controllers.V1
         public async Task<IActionResult> Login([FromBody] UserLoginRequest userLoginRequest)
         {
             AuthenticationResult authResponse = await identityService.Login(userLoginRequest);
-
-            await Task.Delay(3000);
-
             if (!authResponse.Success)
             {
                 return BadRequest(new AuthFailedResponse
@@ -82,6 +76,15 @@ namespace Rental.API.Controllers.V1
             });
         }
 
+        [HttpPost(ApiRoutes.Identity.UserExists)]
+        public async Task<IActionResult> UserExists([FromBody] UserResponse userResponse)
+        {
+            UserEntity user = mapper.Map<UserEntity>(userResponse);
+            bool existingUser = await identityService.UserExists(user);
+
+            return Ok(existingUser);
+        }
+
         [Authorize(Policy = "RolesPolicy")]
         [HttpPost(ApiRoutes.Identity.CreateRole)]
         public async Task<IActionResult> CreateRole([FromBody] RoleRequest roleRequest)
@@ -93,8 +96,23 @@ namespace Rental.API.Controllers.V1
                 return BadRequest(new { Errors = new[] { "The permissions to grant the role were not defined" } });
             RoleEntity role = mapper.Map<RoleEntity>(roleRequest);
             RoleEntity roleCreated = await authService.CreateRole(role, roleRequest.PermissionsIDs);
+            RoleResponse roleResponse = mapper.Map<RoleResponse>(roleCreated);
 
-            return Ok(roleCreated);
+            return Ok(roleResponse);
+        }
+
+        [Authorize(Policy = "UsersPolicy")]
+        [HttpPost(ApiRoutes.Identity.CreateUser)]
+        public async Task<IActionResult> CreateUser([FromBody] UserRegisterRequest userRegisterRequest)
+        {
+            UserEntity user = mapper.Map<UserEntity>(userRegisterRequest);
+            bool existingUser = await identityService.UserExists(user);
+            if (existingUser)
+                return BadRequest(new { Errors = new[] { "User with provided email or username already exists" } });
+            UserEntity userCreated = await authService.CreateUser(user);
+            UserResponse userResponse = mapper.Map<UserResponse>(userCreated);
+
+            return Ok(userResponse);
         }
 
         [Authorize(Policy = "RolesPolicy")]
@@ -104,6 +122,7 @@ namespace Rental.API.Controllers.V1
             RoleEntity role = await authService.FindRole(r => r.Id == id);
             if (role == null)
                 return NotFound();
+            RoleResponse roleResponse = mapper.Map<RoleResponse>(role);
 
             return Ok(role);
         }
@@ -115,25 +134,26 @@ namespace Rental.API.Controllers.V1
             UserEntity user = await authService.FindUser(u => u.Id == id);
             if (user == null)
                 return NotFound();
+            UserResponse userResponse = mapper.Map<UserResponse>(user);
 
             return Ok(user);
         }
 
         [HttpGet(ApiRoutes.Identity.GetRoles)]
-        public async IAsyncEnumerable<RoleEntity> GetRoles()
+        public async IAsyncEnumerable<RoleResponse> GetRoles()
         {
             var roles = authService.Roles();
             await foreach (RoleEntity role in roles)
-                yield return role;
+                yield return mapper.Map<RoleResponse>(role);
         }
 
         [Authorize(Policy = "UsersPolicy")]
         [HttpGet(ApiRoutes.Identity.GetUsers)]
-        public async IAsyncEnumerable<UserEntity> GetUsers()
+        public async IAsyncEnumerable<UserResponse> GetUsers()
         {
             var users = authService.Users();
             await foreach (UserEntity user in users)
-                yield return user;
+                yield return mapper.Map<UserResponse>(user);
         }
 
         [Authorize(Policy = "RolesPolicy")]
