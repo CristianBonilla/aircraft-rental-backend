@@ -18,7 +18,7 @@ namespace Rental.API.Controllers.V1
         public RentalController(IMapper mapper, IRentalService rentalService) =>
             (this.mapper, this.rentalService) = (mapper, rentalService);
 
-        [HttpPost(ApiRoutes.Rental.CreateRental)]
+        [HttpPost(ApiRoutes.V1.Rental.CreateRental)]
         public async Task<IActionResult> CreateRental([FromBody] RentalRequest rentalRequest)
         {
             RentalEntity rental = mapper.Map<RentalEntity>(rentalRequest);
@@ -27,7 +27,7 @@ namespace Rental.API.Controllers.V1
             return Ok(rentalCreated);
         }
 
-        [HttpPost(ApiRoutes.Rental.CreatePassenger)]
+        [HttpPost(ApiRoutes.V1.Rental.CreatePassenger)]
         public async Task<IActionResult> CreatePassenger([FromBody] PassengerRequest passengerRequest)
         {
             PassengerEntity passenger = mapper.Map<PassengerEntity>(passengerRequest);
@@ -36,7 +36,7 @@ namespace Rental.API.Controllers.V1
             return Ok(passengerCreated);
         }
 
-        [HttpGet(ApiRoutes.Rental.GetRentalById)]
+        [HttpGet(ApiRoutes.V1.Rental.GetRentalById)]
         public async Task<IActionResult> GetRentalById(int id)
         {
             RentalEntity rental = await rentalService.FindRental(r => r.Id == id);
@@ -46,7 +46,7 @@ namespace Rental.API.Controllers.V1
             return Ok(rental);
         }
 
-        [HttpGet(ApiRoutes.Rental.GetPassengerById)]
+        [HttpGet(ApiRoutes.V1.Rental.GetPassengerById)]
         public async Task<IActionResult> GetPassengerById(int id)
         {
             PassengerEntity passenger = await rentalService.FindPassenger(p => p.Id == id);
@@ -56,7 +56,7 @@ namespace Rental.API.Controllers.V1
             return Ok(passenger);
         }
 
-        [HttpGet(ApiRoutes.Rental.GetRentals)]
+        [HttpGet(ApiRoutes.V1.Rental.GetRentals)]
         public async IAsyncEnumerable<RentalEntity> GetRentals()
         {
             var rentals = rentalService.Rentals();
@@ -64,7 +64,7 @@ namespace Rental.API.Controllers.V1
                 yield return rental;
         }
 
-        [HttpGet(ApiRoutes.Rental.GetPassengers)]
+        [HttpGet(ApiRoutes.V1.Rental.GetPassengers)]
         public async IAsyncEnumerable<PassengerEntity> GetPassengers()
         {
             var passengers = rentalService.Passengers();

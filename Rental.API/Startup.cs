@@ -136,7 +136,7 @@ namespace Rental.API
             {
                 options.AddPolicy(AllowOriginsPolicy, builder =>
                 {
-                    builder.WithOrigins("http://localhost:1130", "https://localhost:1130")
+                    builder.WithOrigins("http://localhost:11830", "https://localhost:11830")
                         .AllowAnyHeader()
                         .WithMethods("GET", "POST", "PUT", "DELETE");
                 });
@@ -160,6 +160,7 @@ namespace Rental.API
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Rental.API v1"));
             }
 
+            // app.UseHttpsRedirection();
             app.UseRouting();
 
             //app.UseCors();

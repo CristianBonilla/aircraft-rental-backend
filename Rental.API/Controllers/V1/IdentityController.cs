@@ -28,7 +28,7 @@ namespace Rental.API.Controllers.V1
         }
 
         [AllowAnonymous]
-        [HttpPost(ApiRoutes.Identity.Register)]
+        [HttpPost(ApiRoutes.V1.Identity.Register)]
         public async Task<IActionResult> Register([FromBody] UserRegisterRequest userRegisterRequest)
         {
             UserEntity user = mapper.Map<UserEntity>(userRegisterRequest);
@@ -53,7 +53,7 @@ namespace Rental.API.Controllers.V1
         }
 
         [AllowAnonymous]
-        [HttpPost(ApiRoutes.Identity.Login)]
+        [HttpPost(ApiRoutes.V1.Identity.Login)]
         public async Task<IActionResult> Login([FromBody] UserLoginRequest userLoginRequest)
         {
             AuthenticationResult authResponse = await identityService.Login(userLoginRequest);
@@ -76,7 +76,7 @@ namespace Rental.API.Controllers.V1
             });
         }
 
-        [HttpPost(ApiRoutes.Identity.UserExists)]
+        [HttpPost(ApiRoutes.V1.Identity.UserExists)]
         public async Task<IActionResult> UserExists([FromBody] UserResponse userResponse)
         {
             UserEntity user = mapper.Map<UserEntity>(userResponse);
@@ -86,7 +86,7 @@ namespace Rental.API.Controllers.V1
         }
 
         [Authorize(Policy = "RolesPolicy")]
-        [HttpPost(ApiRoutes.Identity.CreateRole)]
+        [HttpPost(ApiRoutes.V1.Identity.CreateRole)]
         public async Task<IActionResult> CreateRole([FromBody] RoleRequest roleRequest)
         {
             bool exstingRole = await authService.RoleExists(r => r.Name == roleRequest.Name);
@@ -102,7 +102,7 @@ namespace Rental.API.Controllers.V1
         }
 
         [Authorize(Policy = "UsersPolicy")]
-        [HttpPost(ApiRoutes.Identity.CreateUser)]
+        [HttpPost(ApiRoutes.V1.Identity.CreateUser)]
         public async Task<IActionResult> CreateUser([FromBody] UserRegisterRequest userRegisterRequest)
         {
             UserEntity user = mapper.Map<UserEntity>(userRegisterRequest);
@@ -116,7 +116,7 @@ namespace Rental.API.Controllers.V1
         }
 
         [Authorize(Policy = "RolesPolicy")]
-        [HttpGet(ApiRoutes.Identity.GetRoleById)]
+        [HttpGet(ApiRoutes.V1.Identity.GetRoleById)]
         public async Task<IActionResult> GetRoleById(int id)
         {
             RoleEntity role = await authService.FindRole(r => r.Id == id);
@@ -128,7 +128,7 @@ namespace Rental.API.Controllers.V1
         }
 
         [Authorize(Policy = "UsersPolicy")]
-        [HttpGet(ApiRoutes.Identity.GetUserById)]
+        [HttpGet(ApiRoutes.V1.Identity.GetUserById)]
         public async Task<IActionResult> GetUserById(int id)
         {
             UserEntity user = await authService.FindUser(u => u.Id == id);
@@ -139,7 +139,7 @@ namespace Rental.API.Controllers.V1
             return Ok(user);
         }
 
-        [HttpGet(ApiRoutes.Identity.GetRoles)]
+        [HttpGet(ApiRoutes.V1.Identity.GetRoles)]
         public async IAsyncEnumerable<RoleResponse> GetRoles()
         {
             var roles = authService.Roles();
@@ -148,7 +148,7 @@ namespace Rental.API.Controllers.V1
         }
 
         [Authorize(Policy = "UsersPolicy")]
-        [HttpGet(ApiRoutes.Identity.GetUsers)]
+        [HttpGet(ApiRoutes.V1.Identity.GetUsers)]
         public async IAsyncEnumerable<UserResponse> GetUsers()
         {
             var users = authService.Users();
@@ -157,7 +157,7 @@ namespace Rental.API.Controllers.V1
         }
 
         [Authorize(Policy = "RolesPolicy")]
-        [HttpGet(ApiRoutes.Identity.GetPermissionsByRole)]
+        [HttpGet(ApiRoutes.V1.Identity.GetPermissionsByRole)]
         public async Task<IActionResult> GetPermissionsByRole(int idRole)
         {
             RoleEntity role = await authService.FindRole(r => r.Id == idRole);
