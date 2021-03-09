@@ -105,7 +105,11 @@ namespace Rental.API.Controllers.V1
         [HttpPost(ApiRoutes.V1.Identity.CreateUser)]
         public async Task<IActionResult> CreateUser([FromBody] UserRegisterRequest userRegisterRequest)
         {
+            RoleEntity role = await authService.FindRole(r => r.Name == userRegisterRequest.Role);
+            if (role == null)
+                return BadRequest(new { Errors = new[] { "The user cannot be created if an existing role is not specified" } });
             UserEntity user = mapper.Map<UserEntity>(userRegisterRequest);
+            user.RoleId = role.Id;
             bool existingUser = await identityService.UserExists(user);
             if (existingUser)
                 return BadRequest(new { Errors = new[] { "User with provided email or username already exists" } });

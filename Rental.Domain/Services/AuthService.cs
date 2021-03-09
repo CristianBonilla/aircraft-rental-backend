@@ -94,7 +94,7 @@ namespace Rental.Domain
 
         public IAsyncEnumerable<UserEntity> Users()
         {
-            var users = userRepository.Get(orderBy: o => o.OrderBy(u => u.FirstName).ThenBy(u => u.LastName)).ToAsyncEnumerable();
+            var users = userRepository.Get(orderBy: o => o.OrderBy(u => u.RoleId).ThenBy(u => u.FirstName)).ToAsyncEnumerable();
 
             return users;
         }
