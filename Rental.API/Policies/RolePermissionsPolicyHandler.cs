@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Rental.API
 {
-    public class RolPermissionsPolicyHandler : AuthorizationHandler<RolPermissionsPolicyRequirement>
+    public class RolePermissionsPolicyHandler : AuthorizationHandler<RolePermissionsPolicyRequirement>
     {
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, RolPermissionsPolicyRequirement requirement)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, RolePermissionsPolicyRequirement requirement)
         {
             var claims = context.User?.Claims ?? Enumerable.Empty<Claim>();
             bool hasRole = claims.Any(c => c.Type == ClaimTypes.Role);

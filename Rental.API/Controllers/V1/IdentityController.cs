@@ -119,7 +119,6 @@ namespace Rental.API.Controllers.V1
             return Ok(userResponse);
         }
 
-        [Authorize(Policy = "RolesPolicy")]
         [HttpGet(ApiRoutes.V1.Identity.GetRoleById)]
         public async Task<IActionResult> GetRoleById(int id)
         {

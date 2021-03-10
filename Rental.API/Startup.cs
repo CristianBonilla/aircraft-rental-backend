@@ -73,26 +73,26 @@ namespace Rental.API
             {
                 options.AddPolicy("UsersPolicy", policy =>
                 {
-                    policy.AddRequirements(new RolPermissionsPolicyRequirement(Permissions.CanUsers));
+                    policy.AddRequirements(new RolePermissionsPolicyRequirement(Permissions.CanUsers));
                 });
                 options.AddPolicy("RolesPolicy", policy =>
                 {
-                    policy.AddRequirements(new RolPermissionsPolicyRequirement(Permissions.CanRoles));
+                    policy.AddRequirements(new RolePermissionsPolicyRequirement(Permissions.CanRoles));
                 });
                 options.AddPolicy("PassengersPolicy", policy =>
                 {
-                    policy.AddRequirements(new RolPermissionsPolicyRequirement(Permissions.CanPassengers));
+                    policy.AddRequirements(new RolePermissionsPolicyRequirement(Permissions.CanPassengers));
                 });
                 options.AddPolicy("RentalsPolicy", policy =>
                 {
-                    policy.AddRequirements(new RolPermissionsPolicyRequirement(Permissions.CanRentals));
+                    policy.AddRequirements(new RolePermissionsPolicyRequirement(Permissions.CanRentals));
                 });
                 options.AddPolicy("AircraftsPolicy", policy =>
                 {
-                    policy.AddRequirements(new RolPermissionsPolicyRequirement(Permissions.CanAircrafts));
+                    policy.AddRequirements(new RolePermissionsPolicyRequirement(Permissions.CanAircrafts));
                 });
             });
-            services.AddSingleton<IAuthorizationHandler, RolPermissionsPolicyHandler>();
+            services.AddSingleton<IAuthorizationHandler, RolePermissionsPolicyHandler>();
 
             MapperConfiguration mapperConfiguration = MapperStart.Start();  
             IMapper mapper = mapperConfiguration.CreateMapper();
