@@ -73,8 +73,10 @@ namespace Rental.Domain
                 new { RoleId = 1, PermissionId = 3 },
                 new { RoleId = 1, PermissionId = 4 },
                 new { RoleId = 1, PermissionId = 5 },
+                new { RoleId = 2, PermissionId = 4 },
                 new { RoleId = 2, PermissionId = 5 },
-                new { RoleId = 3, PermissionId = 4 });
+                new { RoleId = 3, PermissionId = 4 },
+                new { RoleId = 3, PermissionId = 5 });
         }
     }
 }

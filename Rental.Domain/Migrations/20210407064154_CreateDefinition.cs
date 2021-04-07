@@ -192,8 +192,10 @@ namespace Rental.Domain.Migrations
                     { 3, 1 },
                     { 4, 1 },
                     { 5, 1 },
+                    { 4, 2 },
                     { 5, 2 },
-                    { 4, 3 }
+                    { 4, 3 },
+                    { 5, 3 }
                 });
 
             migrationBuilder.CreateIndex(
