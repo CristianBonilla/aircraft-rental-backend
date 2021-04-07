@@ -177,7 +177,8 @@ namespace Rental.Domain.Migrations
                 values: new object[,]
                 {
                     { 1, "Administrador", "AdminUser" },
-                    { 2, "Usuario", "CommonUser" }
+                    { 2, "Pasajero", "PassengerUser" },
+                    { 3, "Piloto", "PilotUser" }
                 });
 
             migrationBuilder.InsertData(
@@ -191,8 +192,8 @@ namespace Rental.Domain.Migrations
                     { 3, 1 },
                     { 4, 1 },
                     { 5, 1 },
-                    { 3, 2 },
-                    { 5, 2 }
+                    { 5, 2 },
+                    { 4, 3 }
                 });
 
             migrationBuilder.CreateIndex(

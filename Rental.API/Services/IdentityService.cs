@@ -113,7 +113,7 @@ namespace Rental.API
             bool emptyUsers = !(await authService.Users().AnyAsync());
             if (!emptyUsers && roleName != null)
                 return await authService.FindRole(r => r.Name == roleName);
-            string defaultRoleName = emptyUsers ? DefaultRoles.AdminUser : DefaultRoles.CommonUser;
+            string defaultRoleName = emptyUsers ? DefaultRoles.AdminUser : DefaultRoles.PassengerUser;
 
             return await authService.FindRole(r => r.Name == defaultRoleName);
         }

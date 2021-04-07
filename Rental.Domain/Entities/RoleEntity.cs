@@ -5,7 +5,8 @@ namespace Rental.Domain
     public struct DefaultRoles
     {
         public const string AdminUser = nameof(AdminUser);
-        public const string CommonUser = nameof(CommonUser);
+        public const string PassengerUser = nameof(PassengerUser);
+        public const string PilotUser = nameof(PilotUser);
     }
 
     public struct Permissions

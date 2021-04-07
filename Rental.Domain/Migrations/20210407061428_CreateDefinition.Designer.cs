@@ -10,7 +10,7 @@ using Rental.Domain;
 namespace Rental.Domain.Migrations
 {
     [DbContext(typeof(RentalContext))]
-    [Migration("20210225081654_CreateDefinition")]
+    [Migration("20210407061428_CreateDefinition")]
     partial class CreateDefinition
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -203,8 +203,14 @@ namespace Rental.Domain.Migrations
                         new
                         {
                             Id = 2,
-                            DisplayName = "Usuario",
-                            Name = "CommonUser"
+                            DisplayName = "Pasajero",
+                            Name = "PassengerUser"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            DisplayName = "Piloto",
+                            Name = "PilotUser"
                         });
                 });
 
@@ -251,12 +257,12 @@ namespace Rental.Domain.Migrations
                         new
                         {
                             RoleId = 2,
-                            PermissionId = 3
+                            PermissionId = 5
                         },
                         new
                         {
-                            RoleId = 2,
-                            PermissionId = 5
+                            RoleId = 3,
+                            PermissionId = 4
                         });
                 });
 
