@@ -201,12 +201,18 @@ namespace Rental.Domain.Migrations
                         new
                         {
                             Id = 2,
+                            DisplayName = "Usuario Común",
+                            Name = "CommonUser"
+                        },
+                        new
+                        {
+                            Id = 3,
                             DisplayName = "Pasajero",
                             Name = "PassengerUser"
                         },
                         new
                         {
-                            Id = 3,
+                            Id = 4,
                             DisplayName = "Piloto",
                             Name = "PilotUser"
                         });
@@ -255,7 +261,7 @@ namespace Rental.Domain.Migrations
                         new
                         {
                             RoleId = 2,
-                            PermissionId = 4
+                            PermissionId = 3
                         },
                         new
                         {
@@ -270,6 +276,21 @@ namespace Rental.Domain.Migrations
                         new
                         {
                             RoleId = 3,
+                            PermissionId = 5
+                        },
+                        new
+                        {
+                            RoleId = 4,
+                            PermissionId = 3
+                        },
+                        new
+                        {
+                            RoleId = 4,
+                            PermissionId = 4
+                        },
+                        new
+                        {
+                            RoleId = 4,
                             PermissionId = 5
                         });
                 });

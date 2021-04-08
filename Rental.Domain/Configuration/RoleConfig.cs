@@ -23,8 +23,9 @@ namespace Rental.Domain
                 .IsUnique();
             builder.HasData(
                 new { Id = 1, Name = DefaultRoles.AdminUser, DisplayName = "Administrador" },
-                new { Id = 2, Name = DefaultRoles.PassengerUser, DisplayName = "Pasajero" },
-                new { Id = 3, Name = DefaultRoles.PilotUser, DisplayName = "Piloto" });
+                new { Id = 2, Name = DefaultRoles.CommonUser, DisplayName = "Usuario Común" },
+                new { Id = 3, Name = DefaultRoles.PassengerUser, DisplayName = "Pasajero" },
+                new { Id = 4, Name = DefaultRoles.PilotUser, DisplayName = "Piloto" });
         }
     }
 
@@ -73,10 +74,13 @@ namespace Rental.Domain
                 new { RoleId = 1, PermissionId = 3 },
                 new { RoleId = 1, PermissionId = 4 },
                 new { RoleId = 1, PermissionId = 5 },
-                new { RoleId = 2, PermissionId = 4 },
+                new { RoleId = 2, PermissionId = 3 },
                 new { RoleId = 2, PermissionId = 5 },
                 new { RoleId = 3, PermissionId = 4 },
-                new { RoleId = 3, PermissionId = 5 });
+                new { RoleId = 3, PermissionId = 5 },
+                new { RoleId = 4, PermissionId = 3 },
+                new { RoleId = 4, PermissionId = 4 },
+                new { RoleId = 4, PermissionId = 5 });
         }
     }
 }
