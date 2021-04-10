@@ -16,7 +16,8 @@ namespace Rental.Domain
                 .IsUnicode()
                 .IsRequired();
             builder.Property(p => p.State)
-                .IsRequired();
+                .IsRequired()
+                .HasConversion(p => (char)p, p => (AircraftState)p);
             builder.Property(p => p.Description)
                 .HasColumnType("nvarchar(max)");
         }

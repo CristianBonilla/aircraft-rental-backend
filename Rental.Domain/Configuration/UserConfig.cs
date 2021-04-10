@@ -11,6 +11,8 @@ namespace Rental.Domain
                 .HasKey(k => k.Id);
             builder.Property(p => p.Id)
                 .ValueGeneratedOnAdd();
+            builder.Property(p => p.IdentificationDocument)
+                .IsRequired();
             builder.Property(p => p.Username)
                 .HasMaxLength(100)
                 .IsRequired();
@@ -33,7 +35,7 @@ namespace Rental.Domain
                 .WithMany()
                 .HasForeignKey(f => f.RoleId)
                 .OnDelete(DeleteBehavior.Cascade);
-            builder.HasIndex(i => new { i.Username, i.Email })
+            builder.HasIndex(i => new { i.IdentificationDocument, i.Username, i.Email })
                 .IsUnique();
         }
     }

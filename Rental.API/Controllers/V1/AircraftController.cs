@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 namespace Rental.API.Controllers.V1
 {
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "AircraftsPolicy")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class AircraftController : ControllerBase
     {
         readonly IMapper mapper;
@@ -18,6 +18,7 @@ namespace Rental.API.Controllers.V1
         public AircraftController(IMapper mapper, IAircraftService aircraftService) =>
             (this.mapper, this.aircraftService) = (mapper, aircraftService);
 
+        [Authorize(Policy = "AircraftsPolicy")]
         [HttpGet(ApiRoutes.V1.Aircraft.Get)]
         public async IAsyncEnumerable<AircraftEntity> Get()
         {
@@ -26,6 +27,7 @@ namespace Rental.API.Controllers.V1
                 yield return aircraft;
         }
 
+        [Authorize(Policy = "AircraftsPolicy")]
         [HttpGet(ApiRoutes.V1.Aircraft.GetById)]
         public async Task<IActionResult> Get(int id)
         {
@@ -36,7 +38,7 @@ namespace Rental.API.Controllers.V1
             return Ok(aircraft);
         }
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "RentalsPolicy")]
         [HttpGet(ApiRoutes.V1.Aircraft.GetByState)]
         public async IAsyncEnumerable<AircraftEntity> GetByState(AircraftState state)
         {
@@ -45,6 +47,7 @@ namespace Rental.API.Controllers.V1
                 yield return aircraft;
         }
 
+        [Authorize(Policy = "AircraftsPolicy")]
         [HttpPost(ApiRoutes.V1.Aircraft.Create)]
         public async Task<IActionResult> Post([FromBody] AircraftRequest aircraftRequest)
         {
@@ -54,6 +57,7 @@ namespace Rental.API.Controllers.V1
             return Ok(aircraftCreated);
         }
 
+        [Authorize(Policy = "AircraftsPolicy")]
         [HttpPut(ApiRoutes.V1.Aircraft.Update)]
         public async Task<IActionResult> Put(int id, [FromBody] AircraftRequest aircraftRequest)
         {
@@ -66,6 +70,7 @@ namespace Rental.API.Controllers.V1
             return Ok(aircraftUpdated);
         }
 
+        [Authorize(Policy = "AircraftsPolicy")]
         [HttpDelete(ApiRoutes.V1.Aircraft.Delete)]
         public async Task<IActionResult> Delete(int id)
         {

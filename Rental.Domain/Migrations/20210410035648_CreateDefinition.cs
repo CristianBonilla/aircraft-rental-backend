@@ -18,7 +18,7 @@ namespace Rental.Domain.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    State = table.Column<int>(type: "int", nullable: false),
+                    State = table.Column<char>(type: "nvarchar(1)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -139,6 +139,7 @@ namespace Rental.Domain.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RoleId = table.Column<int>(type: "int", nullable: false),
+                    IdentificationDocument = table.Column<long>(type: "bigint", nullable: false),
                     Username = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Password = table.Column<string>(type: "varchar(max)", nullable: false),
                     Email = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
@@ -235,17 +236,17 @@ namespace Rental.Domain.Migrations
                 column: "PermissionId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_User_IdentificationDocument_Username_Email",
+                schema: "dbo",
+                table: "User",
+                columns: new[] { "IdentificationDocument", "Username", "Email" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_User_RoleId",
                 schema: "dbo",
                 table: "User",
                 column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_User_Username_Email",
-                schema: "dbo",
-                table: "User",
-                columns: new[] { "Username", "Email" },
-                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

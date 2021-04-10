@@ -21,6 +21,7 @@ using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using Rental.Domain;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json.Converters;
 
 namespace Rental.API
 {
@@ -121,7 +122,7 @@ namespace Rental.API
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey
                 });
-                OpenApiSecurityScheme apiSecurity = new OpenApiSecurityScheme
+                OpenApiSecurityScheme apiSecurity = new()
                 {
                     Reference = new OpenApiReference
                     {
@@ -184,6 +185,7 @@ namespace Rental.API
         private void JsonSerializer(MvcNewtonsoftJsonOptions options)
         {
             JsonSerializerSettings settings = options.SerializerSettings;
+            settings.Converters.Add(new StringEnumConverter());
             settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             settings.Formatting = Formatting.None;

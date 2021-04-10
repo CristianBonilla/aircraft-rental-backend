@@ -9,7 +9,7 @@ using Rental.Domain;
 namespace Rental.API.Controllers.V1
 {
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "RentalsPolicy")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class RentalController : ControllerBase
     {
         readonly IMapper mapper;
@@ -18,6 +18,7 @@ namespace Rental.API.Controllers.V1
         public RentalController(IMapper mapper, IRentalService rentalService) =>
             (this.mapper, this.rentalService) = (mapper, rentalService);
 
+        [Authorize(Policy = "RentalsPolicy")]
         [HttpPost(ApiRoutes.V1.Rental.CreateRental)]
         public async Task<IActionResult> CreateRental([FromBody] RentalRequest rentalRequest)
         {
@@ -27,6 +28,7 @@ namespace Rental.API.Controllers.V1
             return Ok(rentalCreated);
         }
 
+        [Authorize(Policy = "PassengersPolicy")]
         [HttpPost(ApiRoutes.V1.Rental.CreatePassenger)]
         public async Task<IActionResult> CreatePassenger([FromBody] PassengerRequest passengerRequest)
         {
@@ -36,6 +38,7 @@ namespace Rental.API.Controllers.V1
             return Ok(passengerCreated);
         }
 
+        [Authorize(Policy = "RentalsPolicy")]
         [HttpGet(ApiRoutes.V1.Rental.GetRentalById)]
         public async Task<IActionResult> GetRentalById(int id)
         {
@@ -46,6 +49,7 @@ namespace Rental.API.Controllers.V1
             return Ok(rental);
         }
 
+        [Authorize(Policy = "PassengersPolicy")]
         [HttpGet(ApiRoutes.V1.Rental.GetPassengerById)]
         public async Task<IActionResult> GetPassengerById(int id)
         {
@@ -56,6 +60,7 @@ namespace Rental.API.Controllers.V1
             return Ok(passenger);
         }
 
+        [Authorize(Policy = "RentalsPolicy")]
         [HttpGet(ApiRoutes.V1.Rental.GetRentals)]
         public async IAsyncEnumerable<RentalEntity> GetRentals()
         {
@@ -64,6 +69,7 @@ namespace Rental.API.Controllers.V1
                 yield return rental;
         }
 
+        [Authorize(Policy = "PassengersPolicy")]
         [HttpGet(ApiRoutes.V1.Rental.GetPassengers)]
         public async IAsyncEnumerable<PassengerEntity> GetPassengers()
         {

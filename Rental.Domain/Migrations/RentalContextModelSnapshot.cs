@@ -35,8 +35,8 @@ namespace Rental.Domain.Migrations
                         .IsUnicode(true)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("State")
-                        .HasColumnType("int");
+                    b.Property<char>("State")
+                        .HasColumnType("nvarchar(1)");
 
                     b.HasKey("Id");
 
@@ -314,6 +314,9 @@ namespace Rental.Domain.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<long>("IdentificationDocument")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -336,7 +339,7 @@ namespace Rental.Domain.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.HasIndex("Username", "Email")
+                    b.HasIndex("IdentificationDocument", "Username", "Email")
                         .IsUnique();
 
                     b.ToTable("User", "dbo");
