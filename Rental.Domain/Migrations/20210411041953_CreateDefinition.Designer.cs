@@ -10,7 +10,7 @@ using Rental.Domain;
 namespace Rental.Domain.Migrations
 {
     [DbContext(typeof(RentalContext))]
-    [Migration("20210410035648_CreateDefinition")]
+    [Migration("20210411041953_CreateDefinition")]
     partial class CreateDefinition
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,10 +23,10 @@ namespace Rental.Domain.Migrations
 
             modelBuilder.Entity("Rental.Domain.AircraftEntity", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -47,10 +47,10 @@ namespace Rental.Domain.Migrations
 
             modelBuilder.Entity("Rental.Domain.PassengerEntity", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -78,10 +78,10 @@ namespace Rental.Domain.Migrations
 
             modelBuilder.Entity("Rental.Domain.PermissionEntity", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<string>("DisplayName")
                         .IsRequired()
@@ -95,6 +95,9 @@ namespace Rental.Domain.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Name", "DisplayName")
@@ -105,45 +108,50 @@ namespace Rental.Domain.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = new Guid("c5e3a53f-ce37-4512-91f3-a6d823dabe06"),
                             DisplayName = "Roles",
-                            Name = "CanRoles"
+                            Name = "CanRoles",
+                            Order = 1
                         },
                         new
                         {
-                            Id = 2,
+                            Id = new Guid("b8c5caa1-4a44-4783-af7e-eb29617a5a70"),
                             DisplayName = "Usuarios",
-                            Name = "CanUsers"
+                            Name = "CanUsers",
+                            Order = 2
                         },
                         new
                         {
-                            Id = 3,
+                            Id = new Guid("186df72b-0328-4539-8015-2965eb13ccec"),
                             DisplayName = "Alquileres",
-                            Name = "CanRentals"
+                            Name = "CanRentals",
+                            Order = 3
                         },
                         new
                         {
-                            Id = 4,
+                            Id = new Guid("44eb6612-536e-46d2-96ef-a752691f2296"),
                             DisplayName = "Aeronaves",
-                            Name = "CanAircrafts"
+                            Name = "CanAircrafts",
+                            Order = 4
                         },
                         new
                         {
-                            Id = 5,
+                            Id = new Guid("352dec26-951c-4236-afb5-b059f014e819"),
                             DisplayName = "Pasajeros",
-                            Name = "CanPassengers"
+                            Name = "CanPassengers",
+                            Order = 5
                         });
                 });
 
             modelBuilder.Entity("Rental.Domain.RentalEntity", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
-                    b.Property<int>("AircraftId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("AircraftId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ArrivalDate")
                         .HasColumnType("datetime2");
@@ -155,8 +163,8 @@ namespace Rental.Domain.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(max)");
 
-                    b.Property<int>("PassengerId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("PassengerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -169,10 +177,10 @@ namespace Rental.Domain.Migrations
 
             modelBuilder.Entity("Rental.Domain.RoleEntity", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<string>("DisplayName")
                         .IsRequired()
@@ -196,25 +204,25 @@ namespace Rental.Domain.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = new Guid("6bbe4b56-3f81-4957-a8f1-33c9112db4a2"),
                             DisplayName = "Administrador",
                             Name = "AdminUser"
                         },
                         new
                         {
-                            Id = 2,
+                            Id = new Guid("22b20e06-f147-41d6-8333-7c921242ad27"),
                             DisplayName = "Usuario Común",
                             Name = "CommonUser"
                         },
                         new
                         {
-                            Id = 3,
+                            Id = new Guid("aedb18fc-7b6c-488c-80bf-8bc2b36febe3"),
                             DisplayName = "Pasajero",
                             Name = "PassengerUser"
                         },
                         new
                         {
-                            Id = 4,
+                            Id = new Guid("da9fbf03-d19b-4586-a28b-7b8deaa7a5b6"),
                             DisplayName = "Piloto",
                             Name = "PilotUser"
                         });
@@ -222,11 +230,11 @@ namespace Rental.Domain.Migrations
 
             modelBuilder.Entity("Rental.Domain.RolePermissionEntity", b =>
                 {
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("PermissionId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("PermissionId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("RoleId", "PermissionId");
 
@@ -237,72 +245,72 @@ namespace Rental.Domain.Migrations
                     b.HasData(
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 1
+                            RoleId = new Guid("6bbe4b56-3f81-4957-a8f1-33c9112db4a2"),
+                            PermissionId = new Guid("c5e3a53f-ce37-4512-91f3-a6d823dabe06")
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 2
+                            RoleId = new Guid("6bbe4b56-3f81-4957-a8f1-33c9112db4a2"),
+                            PermissionId = new Guid("b8c5caa1-4a44-4783-af7e-eb29617a5a70")
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 3
+                            RoleId = new Guid("6bbe4b56-3f81-4957-a8f1-33c9112db4a2"),
+                            PermissionId = new Guid("186df72b-0328-4539-8015-2965eb13ccec")
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 4
+                            RoleId = new Guid("6bbe4b56-3f81-4957-a8f1-33c9112db4a2"),
+                            PermissionId = new Guid("44eb6612-536e-46d2-96ef-a752691f2296")
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 5
+                            RoleId = new Guid("6bbe4b56-3f81-4957-a8f1-33c9112db4a2"),
+                            PermissionId = new Guid("352dec26-951c-4236-afb5-b059f014e819")
                         },
                         new
                         {
-                            RoleId = 2,
-                            PermissionId = 3
+                            RoleId = new Guid("22b20e06-f147-41d6-8333-7c921242ad27"),
+                            PermissionId = new Guid("186df72b-0328-4539-8015-2965eb13ccec")
                         },
                         new
                         {
-                            RoleId = 2,
-                            PermissionId = 5
+                            RoleId = new Guid("22b20e06-f147-41d6-8333-7c921242ad27"),
+                            PermissionId = new Guid("352dec26-951c-4236-afb5-b059f014e819")
                         },
                         new
                         {
-                            RoleId = 3,
-                            PermissionId = 4
+                            RoleId = new Guid("aedb18fc-7b6c-488c-80bf-8bc2b36febe3"),
+                            PermissionId = new Guid("44eb6612-536e-46d2-96ef-a752691f2296")
                         },
                         new
                         {
-                            RoleId = 3,
-                            PermissionId = 5
+                            RoleId = new Guid("aedb18fc-7b6c-488c-80bf-8bc2b36febe3"),
+                            PermissionId = new Guid("352dec26-951c-4236-afb5-b059f014e819")
                         },
                         new
                         {
-                            RoleId = 4,
-                            PermissionId = 3
+                            RoleId = new Guid("da9fbf03-d19b-4586-a28b-7b8deaa7a5b6"),
+                            PermissionId = new Guid("186df72b-0328-4539-8015-2965eb13ccec")
                         },
                         new
                         {
-                            RoleId = 4,
-                            PermissionId = 4
+                            RoleId = new Guid("da9fbf03-d19b-4586-a28b-7b8deaa7a5b6"),
+                            PermissionId = new Guid("44eb6612-536e-46d2-96ef-a752691f2296")
                         },
                         new
                         {
-                            RoleId = 4,
-                            PermissionId = 5
+                            RoleId = new Guid("da9fbf03-d19b-4586-a28b-7b8deaa7a5b6"),
+                            PermissionId = new Guid("352dec26-951c-4236-afb5-b059f014e819")
                         });
                 });
 
             modelBuilder.Entity("Rental.Domain.UserEntity", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -329,8 +337,8 @@ namespace Rental.Domain.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(max)");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Username")
                         .IsRequired()

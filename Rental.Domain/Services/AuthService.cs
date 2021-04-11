@@ -29,7 +29,7 @@ namespace Rental.Domain
             this.rolePermissionRepository = rolePermissionRepository;
         }
 
-        public async Task<RoleEntity> CreateRole(RoleEntity role, int[] permissionIDs)
+        public async Task<RoleEntity> CreateRole(RoleEntity role, Guid[] permissionIDs)
         {
             var rolePermissions = permissionIDs.Distinct().Where(id => permissionRepository.Exists(p => p.Id == id))
                 .Select(id => new RolePermissionEntity { Role = role, PermissionId = id });

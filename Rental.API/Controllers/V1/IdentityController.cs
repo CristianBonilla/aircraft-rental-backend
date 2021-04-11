@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -120,7 +121,7 @@ namespace Rental.API.Controllers.V1
         }
 
         [HttpGet(ApiRoutes.V1.Identity.GetRoleById)]
-        public async Task<IActionResult> GetRoleById(int id)
+        public async Task<IActionResult> GetRoleById(Guid id)
         {
             RoleEntity role = await authService.FindRole(r => r.Id == id);
             if (role == null)
@@ -132,7 +133,7 @@ namespace Rental.API.Controllers.V1
 
         [Authorize(Policy = "UsersPolicy")]
         [HttpGet(ApiRoutes.V1.Identity.GetUserById)]
-        public async Task<IActionResult> GetUserById(int id)
+        public async Task<IActionResult> GetUserById(Guid id)
         {
             UserEntity user = await authService.FindUser(u => u.Id == id);
             if (user == null)
@@ -161,7 +162,7 @@ namespace Rental.API.Controllers.V1
 
         [Authorize(Policy = "RolesPolicy")]
         [HttpGet(ApiRoutes.V1.Identity.GetPermissionsByRole)]
-        public async Task<IActionResult> GetPermissionsByRole(int idRole)
+        public async Task<IActionResult> GetPermissionsByRole(Guid idRole)
         {
             RoleEntity role = await authService.FindRole(r => r.Id == idRole);
             if (role == null)

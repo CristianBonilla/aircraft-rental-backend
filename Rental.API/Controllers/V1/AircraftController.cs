@@ -1,3 +1,4 @@
+using System;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Rental.Domain;
@@ -29,7 +30,7 @@ namespace Rental.API.Controllers.V1
 
         [Authorize(Policy = "AircraftsPolicy")]
         [HttpGet(ApiRoutes.V1.Aircraft.GetById)]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(Guid id)
         {
             AircraftEntity aircraft = await aircraftService.FindAircraft(a => a.Id == id);
             if (aircraft == null)
@@ -59,7 +60,7 @@ namespace Rental.API.Controllers.V1
 
         [Authorize(Policy = "AircraftsPolicy")]
         [HttpPut(ApiRoutes.V1.Aircraft.Update)]
-        public async Task<IActionResult> Put(int id, [FromBody] AircraftRequest aircraftRequest)
+        public async Task<IActionResult> Put(Guid id, [FromBody] AircraftRequest aircraftRequest)
         {
             AircraftEntity aircraft = await aircraftService.FindAircraft(a => a.Id == id);
             if (aircraft == null)
@@ -72,7 +73,7 @@ namespace Rental.API.Controllers.V1
 
         [Authorize(Policy = "AircraftsPolicy")]
         [HttpDelete(ApiRoutes.V1.Aircraft.Delete)]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             AircraftEntity aircraftFound = await aircraftService.FindAircraft(a => a.Id == id);
             if (aircraftFound == null)

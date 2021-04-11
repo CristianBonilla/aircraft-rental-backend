@@ -16,7 +16,7 @@ namespace Rental.Domain
 
     public class AircraftEntity
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public AircraftState State { get; set; }
         public string Description { get; set; }
@@ -24,9 +24,9 @@ namespace Rental.Domain
 
     public class RentalEntity
     {
-        public int Id { get; set; }
-        public int PassengerId { get; set; }
-        public int AircraftId { get; set; }
+        public Guid Id { get; set; }
+        public Guid PassengerId { get; set; }
+        public Guid AircraftId { get; set; }
         public string Location { get; set; }
         public DateTime ArrivalDate { get; set; }
         public DateTime DepartureDate { get; set; }
@@ -36,7 +36,7 @@ namespace Rental.Domain
 
     public class PassengerEntity
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public long IdentificationDocument { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

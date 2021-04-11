@@ -15,8 +15,7 @@ namespace Rental.Domain.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     State = table.Column<char>(type: "nvarchar(1)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -31,8 +30,7 @@ namespace Rental.Domain.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     IdentificationDocument = table.Column<long>(type: "bigint", nullable: false),
                     FirstName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
@@ -48,8 +46,8 @@ namespace Rental.Domain.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
+                    Order = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
                     DisplayName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false)
                 },
@@ -63,8 +61,7 @@ namespace Rental.Domain.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     Name = table.Column<string>(type: "varchar(30)", unicode: false, maxLength: 30, nullable: false),
                     DisplayName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false)
                 },
@@ -78,10 +75,9 @@ namespace Rental.Domain.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PassengerId = table.Column<int>(type: "int", nullable: false),
-                    AircraftId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
+                    PassengerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AircraftId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Location = table.Column<string>(type: "varchar(max)", nullable: false),
                     ArrivalDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DepartureDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -109,8 +105,8 @@ namespace Rental.Domain.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    RoleId = table.Column<int>(type: "int", nullable: false),
-                    PermissionId = table.Column<int>(type: "int", nullable: false)
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PermissionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -136,9 +132,8 @@ namespace Rental.Domain.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IdentificationDocument = table.Column<long>(type: "bigint", nullable: false),
                     Username = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Password = table.Column<string>(type: "varchar(max)", nullable: false),
@@ -161,14 +156,14 @@ namespace Rental.Domain.Migrations
             migrationBuilder.InsertData(
                 schema: "dbo",
                 table: "Permission",
-                columns: new[] { "Id", "DisplayName", "Name" },
+                columns: new[] { "Id", "DisplayName", "Name", "Order" },
                 values: new object[,]
                 {
-                    { 1, "Roles", "CanRoles" },
-                    { 2, "Usuarios", "CanUsers" },
-                    { 3, "Alquileres", "CanRentals" },
-                    { 4, "Aeronaves", "CanAircrafts" },
-                    { 5, "Pasajeros", "CanPassengers" }
+                    { new Guid("c5e3a53f-ce37-4512-91f3-a6d823dabe06"), "Roles", "CanRoles", 1 },
+                    { new Guid("b8c5caa1-4a44-4783-af7e-eb29617a5a70"), "Usuarios", "CanUsers", 2 },
+                    { new Guid("186df72b-0328-4539-8015-2965eb13ccec"), "Alquileres", "CanRentals", 3 },
+                    { new Guid("44eb6612-536e-46d2-96ef-a752691f2296"), "Aeronaves", "CanAircrafts", 4 },
+                    { new Guid("352dec26-951c-4236-afb5-b059f014e819"), "Pasajeros", "CanPassengers", 5 }
                 });
 
             migrationBuilder.InsertData(
@@ -177,10 +172,10 @@ namespace Rental.Domain.Migrations
                 columns: new[] { "Id", "DisplayName", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Administrador", "AdminUser" },
-                    { 2, "Usuario Común", "CommonUser" },
-                    { 3, "Pasajero", "PassengerUser" },
-                    { 4, "Piloto", "PilotUser" }
+                    { new Guid("6bbe4b56-3f81-4957-a8f1-33c9112db4a2"), "Administrador", "AdminUser" },
+                    { new Guid("22b20e06-f147-41d6-8333-7c921242ad27"), "Usuario Común", "CommonUser" },
+                    { new Guid("aedb18fc-7b6c-488c-80bf-8bc2b36febe3"), "Pasajero", "PassengerUser" },
+                    { new Guid("da9fbf03-d19b-4586-a28b-7b8deaa7a5b6"), "Piloto", "PilotUser" }
                 });
 
             migrationBuilder.InsertData(
@@ -189,18 +184,18 @@ namespace Rental.Domain.Migrations
                 columns: new[] { "PermissionId", "RoleId" },
                 values: new object[,]
                 {
-                    { 1, 1 },
-                    { 2, 1 },
-                    { 3, 1 },
-                    { 4, 1 },
-                    { 5, 1 },
-                    { 3, 2 },
-                    { 5, 2 },
-                    { 4, 3 },
-                    { 5, 3 },
-                    { 3, 4 },
-                    { 4, 4 },
-                    { 5, 4 }
+                    { new Guid("c5e3a53f-ce37-4512-91f3-a6d823dabe06"), new Guid("6bbe4b56-3f81-4957-a8f1-33c9112db4a2") },
+                    { new Guid("b8c5caa1-4a44-4783-af7e-eb29617a5a70"), new Guid("6bbe4b56-3f81-4957-a8f1-33c9112db4a2") },
+                    { new Guid("186df72b-0328-4539-8015-2965eb13ccec"), new Guid("6bbe4b56-3f81-4957-a8f1-33c9112db4a2") },
+                    { new Guid("44eb6612-536e-46d2-96ef-a752691f2296"), new Guid("6bbe4b56-3f81-4957-a8f1-33c9112db4a2") },
+                    { new Guid("352dec26-951c-4236-afb5-b059f014e819"), new Guid("6bbe4b56-3f81-4957-a8f1-33c9112db4a2") },
+                    { new Guid("186df72b-0328-4539-8015-2965eb13ccec"), new Guid("22b20e06-f147-41d6-8333-7c921242ad27") },
+                    { new Guid("352dec26-951c-4236-afb5-b059f014e819"), new Guid("22b20e06-f147-41d6-8333-7c921242ad27") },
+                    { new Guid("44eb6612-536e-46d2-96ef-a752691f2296"), new Guid("aedb18fc-7b6c-488c-80bf-8bc2b36febe3") },
+                    { new Guid("352dec26-951c-4236-afb5-b059f014e819"), new Guid("aedb18fc-7b6c-488c-80bf-8bc2b36febe3") },
+                    { new Guid("186df72b-0328-4539-8015-2965eb13ccec"), new Guid("da9fbf03-d19b-4586-a28b-7b8deaa7a5b6") },
+                    { new Guid("44eb6612-536e-46d2-96ef-a752691f2296"), new Guid("da9fbf03-d19b-4586-a28b-7b8deaa7a5b6") },
+                    { new Guid("352dec26-951c-4236-afb5-b059f014e819"), new Guid("da9fbf03-d19b-4586-a28b-7b8deaa7a5b6") }
                 });
 
             migrationBuilder.CreateIndex(

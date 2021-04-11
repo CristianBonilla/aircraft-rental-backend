@@ -7,7 +7,7 @@ namespace Rental.Domain
 {
     public interface IAuthService
     {
-        Task<RoleEntity> CreateRole(RoleEntity role, int[] permissionIDs);
+        Task<RoleEntity> CreateRole(RoleEntity role, Guid[] permissionIDs);
         Task<UserEntity> CreateUser(UserEntity user);
         Task<RoleEntity> FindRole(Expression<Func<RoleEntity, bool>> expression);
         Task<UserEntity> FindUser(Expression<Func<UserEntity, bool>> expression);

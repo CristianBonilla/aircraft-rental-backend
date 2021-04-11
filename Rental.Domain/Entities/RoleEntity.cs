@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Rental.Domain
@@ -21,7 +22,7 @@ namespace Rental.Domain
 
     public class RoleEntity
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string DisplayName { get; set; }
         public ICollection<RolePermissionEntity> Permissions { get; set; }
@@ -29,15 +30,16 @@ namespace Rental.Domain
 
     public class PermissionEntity
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
+        public int Order { get; set; }
         public string Name { get; set; }
         public string DisplayName { get; set; }
     }
 
     public class RolePermissionEntity
     {
-        public int RoleId { get; set; }
-        public int PermissionId { get; set; }
+        public Guid RoleId { get; set; }
+        public Guid PermissionId { get; set; }
         public RoleEntity Role { get; set; }
         public PermissionEntity Permission { get; set; }
     }

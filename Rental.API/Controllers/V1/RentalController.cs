@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 using Rental.Domain;
+using System;
 
 namespace Rental.API.Controllers.V1
 {
@@ -40,7 +41,7 @@ namespace Rental.API.Controllers.V1
 
         [Authorize(Policy = "RentalsPolicy")]
         [HttpGet(ApiRoutes.V1.Rental.GetRentalById)]
-        public async Task<IActionResult> GetRentalById(int id)
+        public async Task<IActionResult> GetRentalById(Guid id)
         {
             RentalEntity rental = await rentalService.FindRental(r => r.Id == id);
             if (rental == null)
@@ -51,7 +52,7 @@ namespace Rental.API.Controllers.V1
 
         [Authorize(Policy = "PassengersPolicy")]
         [HttpGet(ApiRoutes.V1.Rental.GetPassengerById)]
-        public async Task<IActionResult> GetPassengerById(int id)
+        public async Task<IActionResult> GetPassengerById(Guid id)
         {
             PassengerEntity passenger = await rentalService.FindPassenger(p => p.Id == id);
             if (passenger == null)

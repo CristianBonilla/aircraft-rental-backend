@@ -10,7 +10,8 @@ namespace Rental.Domain
             builder.ToTable("Aircraft", "dbo")
                 .HasKey(k => k.Id);
             builder.Property(p => p.Id)
-                .ValueGeneratedOnAdd();
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("NEWID()");
             builder.Property(p => p.Name)
                 .HasMaxLength(100)
                 .IsUnicode()
@@ -30,7 +31,8 @@ namespace Rental.Domain
             builder.ToTable("Rental", "dbo")
                 .HasKey(k => k.Id);
             builder.Property(p => p.Id)
-                .ValueGeneratedOnAdd();
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("NEWID()");
             builder.Property(p => p.Location)
                 .HasColumnType("varchar(max)")
                 .IsRequired();
@@ -56,7 +58,8 @@ namespace Rental.Domain
             builder.ToTable("Passenger", "dbo")
                 .HasKey(k => k.Id);
             builder.Property(p => p.Id)
-                .ValueGeneratedOnAdd();
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("NEWID()");
             builder.Property(p => p.IdentificationDocument)
                 .IsRequired();
             builder.Property(p => p.FirstName)
