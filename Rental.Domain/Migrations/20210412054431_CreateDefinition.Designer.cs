@@ -10,7 +10,7 @@ using Rental.Domain;
 namespace Rental.Domain.Migrations
 {
     [DbContext(typeof(RentalContext))]
-    [Migration("20210411041953_CreateDefinition")]
+    [Migration("20210412054431_CreateDefinition")]
     partial class CreateDefinition
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,8 +37,8 @@ namespace Rental.Domain.Migrations
                         .IsUnicode(true)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<char>("State")
-                        .HasColumnType("nvarchar(1)");
+                    b.Property<int>("State")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

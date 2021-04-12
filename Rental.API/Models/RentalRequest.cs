@@ -4,7 +4,7 @@ namespace Rental.API
 {
     public class RentalRequest
     {
-        public Guid PassengerId { get; set; }
+        public Guid[] PassengerIDs { get; set; }
         public Guid AircraftId { get; set; }
         public string Location { get; set; }
         public DateTime ArrivalDate { get; set; }

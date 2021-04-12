@@ -19,6 +19,7 @@ namespace Rental.Domain
 
         public async Task<AircraftEntity> CreateAircraft(AircraftEntity aircraft)
         {
+            aircraft.State = AircraftState.NotRented;
             AircraftEntity aircraftCreated = repository.Create(aircraft);
             _ = await context.SaveAsync();
 

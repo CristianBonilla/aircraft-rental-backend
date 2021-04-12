@@ -7,7 +7,7 @@ namespace Rental.Domain
 {
     public interface IRentalService
     {
-        Task<RentalEntity> CreateRental(RentalEntity rental);
+        IAsyncEnumerable<RentalEntity> CreateRental(RentalEntity rental, Guid[] passengerIDs);
         Task<PassengerEntity> CreatePassenger(PassengerEntity passenger);
         Task<RentalEntity> FindRental(Expression<Func<RentalEntity, bool>> expression);
         Task<PassengerEntity> FindPassenger(Expression<Func<PassengerEntity, bool>> expression);

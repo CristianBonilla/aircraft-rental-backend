@@ -41,6 +41,7 @@ namespace Rental.API
                 public const string GetPassengerById = Base + "/rental/passengers/{id}";
                 public const string GetRentals = Base + "/rental";
                 public const string GetPassengers = Base + "/rental/passengers";
+                public const string GetPassengersNotAvailable = Base + "/rental/passengers/notavailable";
             }
         }
     }

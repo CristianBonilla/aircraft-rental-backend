@@ -35,8 +35,8 @@ namespace Rental.Domain.Migrations
                         .IsUnicode(true)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<char>("State")
-                        .HasColumnType("nvarchar(1)");
+                    b.Property<int>("State")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

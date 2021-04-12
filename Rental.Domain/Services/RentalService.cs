@@ -11,20 +11,39 @@ namespace Rental.Domain
     {
         readonly IRepositoryContext<RentalContext> context;
         readonly IRepository<RentalContext, PassengerEntity> passengerRepository;
+        readonly IRepository<RentalContext, AircraftEntity> aircraftRepository;
         readonly IRepository<RentalContext, RentalEntity> rentalRepository;
 
         public RentalService(
             IRepositoryContext<RentalContext> context,
             IRepository<RentalContext, PassengerEntity> passengerRepository,
-            IRepository<RentalContext, RentalEntity> rentalRepository) =>
-            (this.context, this.passengerRepository, this.rentalRepository) = (context, passengerRepository, rentalRepository);
-
-        public async Task<RentalEntity> CreateRental(RentalEntity rental)
+            IRepository<RentalContext, AircraftEntity> aircraftRepository,
+            IRepository<RentalContext, RentalEntity> rentalRepository)
         {
-            RentalEntity rentalCreated = rentalRepository.Create(rental);
-            _ = await context.SaveAsync();
+            this.context = context;
+            this.passengerRepository = passengerRepository;
+            this.aircraftRepository = aircraftRepository;
+            this.rentalRepository = rentalRepository;
+        }
 
-            return rentalCreated;
+        public async IAsyncEnumerable<RentalEntity> CreateRental(RentalEntity rental, Guid[] passengerIDs)
+        {
+            var rentals = passengerIDs.Distinct().Where(passengerId => passengerRepository.Exists(p => p.Id == passengerId))
+                .Select(passengerId => new RentalEntity
+                {
+                    PassengerId = passengerId,
+                    AircraftId = rental.AircraftId,
+                    Location = rental.Location,
+                    ArrivalDate = rental.ArrivalDate,
+                    DepartureDate = rental.DepartureDate
+                }).ToList();
+            var rentalsCreated = rentalRepository.CreateAll(rentals);
+            AircraftEntity aircraft = aircraftRepository.Find(rental.AircraftId);
+            aircraft.State = AircraftState.Rented;
+            aircraftRepository.Update(aircraft);
+            _ = await context.SaveAsync();
+            await foreach (RentalEntity rentalCreated in rentalsCreated.ToAsyncEnumerable())
+                yield return rentalCreated;
         }
 
         public async Task<PassengerEntity> CreatePassenger(PassengerEntity passenger)

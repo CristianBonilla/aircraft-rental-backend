@@ -10,7 +10,6 @@ namespace Rental.Domain
             builder.ToTable("User", "dbo")
                 .HasKey(k => k.Id);
             builder.Property(p => p.Id)
-                .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("NEWID()");
             builder.Property(p => p.IdentificationDocument)
                 .IsRequired();

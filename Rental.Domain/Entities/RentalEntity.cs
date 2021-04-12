@@ -1,16 +1,10 @@
 using System;
-using System.Runtime.Serialization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Rental.Domain
 {
-    [JsonConverter(typeof(StringEnumConverter))]
     public enum AircraftState
     {
-        [EnumMember(Value = "N")]
         NotRented = 'N',
-        [EnumMember(Value = "R")]
         Rented = 'R'
     }
 

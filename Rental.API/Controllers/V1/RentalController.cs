@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
@@ -5,7 +7,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 using Rental.Domain;
-using System;
 
 namespace Rental.API.Controllers.V1
 {
@@ -21,12 +22,12 @@ namespace Rental.API.Controllers.V1
 
         [Authorize(Policy = "RentalsPolicy")]
         [HttpPost(ApiRoutes.V1.Rental.CreateRental)]
-        public async Task<IActionResult> CreateRental([FromBody] RentalRequest rentalRequest)
+        public async IAsyncEnumerable<RentalEntity> CreateRental([FromBody] RentalRequest rentalRequest)
         {
-            RentalEntity rental = mapper.Map<RentalEntity>(rentalRequest);
-            RentalEntity rentalCreated = await rentalService.CreateRental(rental);
-
-            return Ok(rentalCreated);
+            RentalEntity rentalMap = mapper.Map<RentalEntity>(rentalRequest);
+            var rentalsCreated = rentalService.CreateRental(rentalMap, rentalRequest.PassengerIDs);
+            await foreach (RentalEntity rental in rentalsCreated)
+                yield return rental;
         }
 
         [Authorize(Policy = "PassengersPolicy")]
@@ -77,6 +78,17 @@ namespace Rental.API.Controllers.V1
             var passengers = rentalService.Passengers();
             await foreach (PassengerEntity passenger in passengers)
                 yield return passenger;
+        }
+
+        [Authorize(Policy = "RentalsPolicy")]
+        [HttpGet(ApiRoutes.V1.Rental.GetPassengersNotAvailable)]
+        public async IAsyncEnumerable<PassengerEntity> GetPassengersNotAvailable()
+        {
+            var passengers = rentalService.Passengers();
+            var rentals = rentalService.Rentals();
+            await foreach (PassengerEntity passenger in passengers)
+                if (!await rentals.AnyAsync(rental => rental.PassengerId == passenger.Id))
+                    yield return passenger;
         }
     }
 }

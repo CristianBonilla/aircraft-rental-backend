@@ -25,7 +25,6 @@ namespace Rental.Domain
             builder.ToTable("Role", "dbo")
                 .HasKey(k => k.Id);
             builder.Property(p => p.Id)
-                .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("NEWID()");
             builder.Property(p => p.Name)
                 .HasMaxLength(30)
@@ -52,7 +51,6 @@ namespace Rental.Domain
             builder.ToTable("Permission", "dbo")
                 .HasKey(k => k.Id);
             builder.Property(p => p.Id)
-                .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("NEWID()");
             builder.Property(p => p.Order)
                 .IsRequired();
