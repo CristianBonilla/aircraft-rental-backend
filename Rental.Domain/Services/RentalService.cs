@@ -75,6 +75,16 @@ namespace Rental.Domain
             return rentals;
         }
 
+        public IAsyncEnumerable<RentalEntity> RentalsByAircraftId(Guid aircraftId)
+        {
+            var rentals = rentalRepository.Get(
+                rental => rental.AircraftId == aircraftId,
+                orderBy: o => o.OrderBy(r => r.Location)
+            ).ToAsyncEnumerable();
+
+            return rentals;
+        }
+
         public IAsyncEnumerable<PassengerEntity> Passengers()
         {
             var passengers = passengerRepository.Get(orderBy: o => o.OrderBy(p => p.IdentificationDocument).ThenBy(p => p.FirstName))

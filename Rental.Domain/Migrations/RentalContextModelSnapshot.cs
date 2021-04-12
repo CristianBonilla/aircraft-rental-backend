@@ -274,6 +274,11 @@ namespace Rental.Domain.Migrations
                         new
                         {
                             RoleId = new Guid("22b20e06-f147-41d6-8333-7c921242ad27"),
+                            PermissionId = new Guid("44eb6612-536e-46d2-96ef-a752691f2296")
+                        },
+                        new
+                        {
+                            RoleId = new Guid("22b20e06-f147-41d6-8333-7c921242ad27"),
                             PermissionId = new Guid("352dec26-951c-4236-afb5-b059f014e819")
                         },
                         new

@@ -71,6 +71,16 @@ namespace Rental.API.Controllers.V1
                 yield return rental;
         }
 
+        [Authorize(Policy = "RentalsPolicy")]
+        [HttpGet(ApiRoutes.V1.Rental.GetRentalsByAircraftId)]
+        public async IAsyncEnumerable<RentalEntity> GetRentalsByAircraftId(Guid aircraftId)
+        {
+            var rentalsd = await rentalService.RentalsByAircraftId(aircraftId).ToListAsync();
+            var rentals = rentalService.RentalsByAircraftId(aircraftId);
+            await foreach (RentalEntity rental in rentals)
+                yield return rental;
+        }
+
         [Authorize(Policy = "PassengersPolicy")]
         [HttpGet(ApiRoutes.V1.Rental.GetPassengers)]
         public async IAsyncEnumerable<PassengerEntity> GetPassengers()

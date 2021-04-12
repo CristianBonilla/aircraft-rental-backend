@@ -93,6 +93,7 @@ namespace Rental.Domain
                 new { RoleId = AdminUserId, PermissionId = PassengersPermissionId },
 
                 new { RoleId = CommonUserId, PermissionId = RentalsPermissionId },
+                new { RoleId = CommonUserId, PermissionId = AircraftsPermissionId },
                 new { RoleId = CommonUserId, PermissionId = PassengersPermissionId },
 
                 new { RoleId = PassengerUserId, PermissionId = AircraftsPermissionId },

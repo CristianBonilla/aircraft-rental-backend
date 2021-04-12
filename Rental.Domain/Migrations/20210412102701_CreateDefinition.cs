@@ -190,6 +190,7 @@ namespace Rental.Domain.Migrations
                     { new Guid("44eb6612-536e-46d2-96ef-a752691f2296"), new Guid("6bbe4b56-3f81-4957-a8f1-33c9112db4a2") },
                     { new Guid("352dec26-951c-4236-afb5-b059f014e819"), new Guid("6bbe4b56-3f81-4957-a8f1-33c9112db4a2") },
                     { new Guid("186df72b-0328-4539-8015-2965eb13ccec"), new Guid("22b20e06-f147-41d6-8333-7c921242ad27") },
+                    { new Guid("44eb6612-536e-46d2-96ef-a752691f2296"), new Guid("22b20e06-f147-41d6-8333-7c921242ad27") },
                     { new Guid("352dec26-951c-4236-afb5-b059f014e819"), new Guid("22b20e06-f147-41d6-8333-7c921242ad27") },
                     { new Guid("44eb6612-536e-46d2-96ef-a752691f2296"), new Guid("aedb18fc-7b6c-488c-80bf-8bc2b36febe3") },
                     { new Guid("352dec26-951c-4236-afb5-b059f014e819"), new Guid("aedb18fc-7b6c-488c-80bf-8bc2b36febe3") },

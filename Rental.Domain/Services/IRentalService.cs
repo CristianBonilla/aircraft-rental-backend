@@ -12,6 +12,7 @@ namespace Rental.Domain
         Task<RentalEntity> FindRental(Expression<Func<RentalEntity, bool>> expression);
         Task<PassengerEntity> FindPassenger(Expression<Func<PassengerEntity, bool>> expression);
         IAsyncEnumerable<RentalEntity> Rentals();
+        IAsyncEnumerable<RentalEntity> RentalsByAircraftId(Guid aircraftId);
         IAsyncEnumerable<PassengerEntity> Passengers();
     }
 }

@@ -10,7 +10,7 @@ using Rental.Domain;
 namespace Rental.Domain.Migrations
 {
     [DbContext(typeof(RentalContext))]
-    [Migration("20210412054431_CreateDefinition")]
+    [Migration("20210412102701_CreateDefinition")]
     partial class CreateDefinition
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -272,6 +272,11 @@ namespace Rental.Domain.Migrations
                         {
                             RoleId = new Guid("22b20e06-f147-41d6-8333-7c921242ad27"),
                             PermissionId = new Guid("186df72b-0328-4539-8015-2965eb13ccec")
+                        },
+                        new
+                        {
+                            RoleId = new Guid("22b20e06-f147-41d6-8333-7c921242ad27"),
+                            PermissionId = new Guid("44eb6612-536e-46d2-96ef-a752691f2296")
                         },
                         new
                         {
